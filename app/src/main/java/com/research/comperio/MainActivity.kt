@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
 import com.research.comperio.ui.theme.ComperioTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.research.comperio.screen.MyApp
+import androidx.navigation.compose.rememberNavController
+import com.research.comperio.graphs.RootNavigationGraph
+import com.research.comperio.screen.CreateHomeScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -24,10 +26,13 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+
+
         // This is responsible for initializing the application itself.
         setContent {
             ComperioTheme {
-                MyApp(modifier = Modifier.fillMaxSize())
+                RootNavigationGraph(navController = rememberNavController())
+//                CreateHomeScreen(modifier = Modifier.fillMaxSize())
             }
         }
     }

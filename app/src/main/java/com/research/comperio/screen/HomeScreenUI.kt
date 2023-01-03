@@ -13,34 +13,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.research.comperio.ui.theme.ComperioTheme
 
 @Composable
-fun MyApp(modifier: Modifier = Modifier) {
+fun CreateHomeScreen(modifier: Modifier = Modifier) {
 
-    var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
+    var shouldShowOnboarding by rememberSaveable {
+        mutableStateOf(true)
+    }
 
     Surface(modifier) {
-        if (shouldShowOnboarding){
-            OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false})
+        if (shouldShowOnboarding) {
+            OnboardingScreen(onContinueClicked = {
+                shouldShowOnboarding = false
+            })
         } else {
             Greetings()
         }
     }
 }
 
-@Preview
 @Composable
-fun MyAppPreview() {
-    ComperioTheme {
-        MyApp(Modifier.fillMaxSize())
-    }
-}
-
-@Composable
-private fun Greetings (
-    modifier: Modifier = Modifier,
-    names: List<String> = List(1000) { "$it" }
+private fun Greetings(
+    modifier: Modifier = Modifier, names: List<String> = List(1000) { "$it" }
 ) {
     LazyColumn(modifier.padding(vertical = 4.dp)) {
         items(items = names) { name ->
@@ -53,22 +47,20 @@ private fun Greetings (
 fun Greeting(name: String) {
     var expanded by remember { mutableStateOf(false) }
     val extraPadding by animateDpAsState(
-        if (expanded) 48.dp else 0.dp,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
+        if (expanded) 48.dp else 0.dp, animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow
         )
     )
-//    val extraPadding = if (expanded.value) 48.dp else 0.dp
 
     Surface(
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
         Row(modifier = Modifier.padding(24.dp)) {
-            Column(modifier = Modifier
-                .weight(1f)
-                .padding(bottom = extraPadding.coerceAtLeast(0.dp))
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(bottom = extraPadding.coerceAtLeast(0.dp))
             ) {
                 Text(text = "Hello,")
                 Text(text = "$name!", style = MaterialTheme.typography.headlineMedium)
@@ -82,8 +74,7 @@ fun Greeting(name: String) {
 
 @Composable
 fun OnboardingScreen(
-    onContinueClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    onContinueClicked: () -> Unit, modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -92,10 +83,21 @@ fun OnboardingScreen(
     ) {
         Text("Welcome to the Basics Codelab!")
         Button(
-            modifier = Modifier.padding(vertical = 24.dp),
-            onClick = onContinueClicked
+            modifier = Modifier.padding(vertical = 24.dp), onClick = onContinueClicked
         ) {
             Text("Continue")
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PrevCreateHomeScreen() {
+    CreateHomeScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PrevGreetings() {
+    Greetings()
 }
