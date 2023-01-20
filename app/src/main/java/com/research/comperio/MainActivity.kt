@@ -8,15 +8,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
 import com.research.comperio.ui.theme.ComperioTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.research.comperio.graphs.RootNavigationGraph
-import com.research.comperio.screen.CreateHomeScreen
 
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         // This is responsible for initializing the Splash Screen.
@@ -32,7 +33,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComperioTheme {
                 RootNavigationGraph(navController = rememberNavController())
-//                CreateHomeScreen(modifier = Modifier.fillMaxSize())
             }
         }
     }
