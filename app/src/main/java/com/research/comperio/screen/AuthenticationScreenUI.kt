@@ -1,9 +1,7 @@
 package com.research.comperio.screen
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
+
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -21,13 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.research.comperio.R
 import com.research.comperio.commonUiElements.ComperioButton
-import com.research.comperio.commonUiElements.PasswordInputField
-import com.research.comperio.commonUiElements.TextInputField
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.research.comperio.ui.theme.Contour
@@ -39,7 +32,6 @@ import com.research.comperio.ui.theme.Primary90
 fun LoginContent(
     onClick: () -> Unit,
     onSignUpClick: () -> Unit,
-    onForgotClick: () -> Unit
 ) {
     val ovalColor = MaterialTheme.colors.Primary90
     Column(
@@ -112,7 +104,7 @@ fun LoginContent(
                 displayString = "Registre-se",
                 backgroundColor = MaterialTheme.colors.Neutral10,
                 fontColor = MaterialTheme.colors.Primary90,
-                onClick = {}
+                onClick = onSignUpClick
             )
             Spacer(modifier = Modifier.width(20.dp))
             ComperioButton(
@@ -132,7 +124,6 @@ fun LoginContent(
 fun PrevLoginContent() {
     LoginContent(
         onClick = { },
-        onSignUpClick = { },
-        onForgotClick = { }
+        onSignUpClick = { }
     )
 }
