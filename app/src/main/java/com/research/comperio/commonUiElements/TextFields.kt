@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -16,6 +15,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.research.comperio.R
+import com.research.comperio.ui.theme.Contour
 
 @Composable
 fun TextInputField() {
@@ -32,20 +32,26 @@ fun TextInputField() {
         label = {
             Text(
                 text = stringResource(id = R.string.label_email),
-                color = Color(0xFFFFFFFF)
+                color = MaterialTheme.colors.Contour
             )},
         placeholder = {
             Text(text = stringResource(id = R.string.place_holder_email))
         },
-        trailingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "emailIcon", tint = Color(0xFFFFFFFF)) },
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Default.Email,
+                contentDescription = "emailIcon",
+                tint = MaterialTheme.colors.Contour
+            )
+        },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Color(0xFFEADFEA),
-            cursorColor = Color(0xFFEADFEA),
-            focusedBorderColor = Color(0xFFFFFFFF),
-            unfocusedBorderColor = Color(0xFFFFFFFF),
-            focusedLabelColor = Color(0xFFEADFEA),
-            unfocusedLabelColor = Color(0xFFEADFEA),
-            placeholderColor = Color(0xFFEADFEA)
+            textColor = MaterialTheme.colors.Contour,
+            cursorColor = MaterialTheme.colors.Contour,
+            focusedBorderColor = MaterialTheme.colors.Contour,
+            unfocusedBorderColor = MaterialTheme.colors.Contour,
+            focusedLabelColor = MaterialTheme.colors.Contour,
+            unfocusedLabelColor = MaterialTheme.colors.Contour,
+            placeholderColor = MaterialTheme.colors.Contour
         )
     )
 }
@@ -76,18 +82,18 @@ fun PasswordInputField() {
                 Icon(
                     imageVector  = image,
                     contentDescription = description,
-                    tint = Color(0xFFFFFFFF)
+                    tint = MaterialTheme.colors.Contour
                 )
             }
         },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Color(0xFFEADFEA),
-            cursorColor = Color(0xFFEADFEA),
-            focusedBorderColor = Color(0xFFFFFFFF),
-            unfocusedBorderColor = Color(0xFFFFFFFF),
-            focusedLabelColor = Color(0xFFEADFEA),
-            unfocusedLabelColor = Color(0xFFEADFEA),
-            placeholderColor = Color(0xFFEADFEA)
+            textColor = MaterialTheme.colors.Contour,
+            cursorColor = MaterialTheme.colors.Contour,
+            focusedBorderColor = MaterialTheme.colors.Contour,
+            unfocusedBorderColor = MaterialTheme.colors.Contour,
+            focusedLabelColor = MaterialTheme.colors.Contour,
+            unfocusedLabelColor = MaterialTheme.colors.Contour,
+            placeholderColor = MaterialTheme.colors.Contour
         )
     )
 }
