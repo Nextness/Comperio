@@ -19,13 +19,7 @@ import androidx.core.view.ViewCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = BasePrimary,
+    primary = BasePrimary30,
 //    onPrimary = ,
 //    primaryContainer = ,
 //    onPrimaryContainer = ,
@@ -38,7 +32,36 @@ private val LightColorScheme = lightColorScheme(
 //    onTertiary = ,
 //    tertiaryContainer = ,
 //    onTertiaryContainer = ,
-//    background = ,
+    background = BaseNeutral10,
+//    onBackground = ,
+//    surface = ,
+//    onSurface = ,
+//    surfaceVariant = ,
+//    onSurfaceVariant = ,
+//    inverseSurface = ,
+//    inverseOnSurface = ,
+    error = BaseError,
+//    onError = ,
+//    errorContainer = ,
+//    onErrorContainer = ,
+//    outline =
+)
+
+private val LightColorScheme = lightColorScheme(
+    primary = BasePrimary90,
+//    onPrimary = ,
+//    primaryContainer = ,
+//    onPrimaryContainer = ,
+//    inversePrimary = ,
+    secondary = BaseSecondary,
+//    onSecondary = ,
+//    secondaryContainer = ,
+//    onSecondaryContainer = ,
+    tertiary = BaseTertiary,
+//    onTertiary = ,
+//    tertiaryContainer = ,
+//    onTertiaryContainer = ,
+    background = BaseWhite,
 //    onBackground = ,
 //    surface = ,
 //    onSurface = ,
@@ -176,6 +199,7 @@ fun ComperioTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    val statusBarColor = BasePrimary90
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
@@ -194,7 +218,7 @@ fun ComperioTheme(
             // TODO: When the theme is set to light, the color should be white,
             //  else when the theme is set to dark, the color must match the
             //  dark theme (probably purple).
-            systemUiController.setStatusBarColor(color = Color.White)
+            systemUiController.setStatusBarColor(color = statusBarColor)
         }
     }
 
