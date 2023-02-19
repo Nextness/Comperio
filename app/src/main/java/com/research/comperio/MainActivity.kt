@@ -4,32 +4,38 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.*
-import androidx.compose.ui.Modifier
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.runtime.getValue
 import com.research.comperio.ui.theme.ComperioTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import com.research.comperio.graphs.RootNavigationGraph
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.research.comperio.navigation.SetupNavGraph
+import com.research.comperio.viewmodel.SplashViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@ExperimentalAnimationApi
+@ExperimentalPagerApi
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
+    @Inject
+    lateinit var splashViewModel: SplashViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // This is responsible for initializing the Splash Screen.
-        installSplashScreen().apply {
-            setKeepOnScreenCondition{
-                viewModel.isLoading.value
-            }
+        installSplashScreen().setKeepOnScreenCondition{
+            !splashViewModel.isLoading.value
         }
 
         // This is responsible for initializing the application itself.
         setContent {
             ComperioTheme {
-                RootNavigationGraph(navController = rememberNavController())
+                val screen by splashViewModel.startDestination
+                val navController = rememberNavController()
+                SetupNavGraph(navController = navController, startDestination = screen)
             }
         }
     }
