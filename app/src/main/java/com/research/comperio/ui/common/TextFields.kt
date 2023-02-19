@@ -1,4 +1,4 @@
-package com.research.comperio.commonUiElements
+package com.research.comperio.commonui
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*

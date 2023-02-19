@@ -1,7 +1,6 @@
-package com.research.comperio.commonUiElements
+package com.research.comperio.commonui
 
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -19,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.research.comperio.ui.theme.Neutral10
-import com.research.comperio.ui.theme.Primary10
 import com.research.comperio.ui.theme.Primary90
 
 @Composable
