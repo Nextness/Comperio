@@ -44,29 +44,49 @@ fun OnboardingScreen(
     val pagerState = rememberPagerState(pageCount = 3)
 
     Column(modifier = Modifier.fillMaxSize()) {
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.End){
+            Text(
+                modifier = Modifier
+                    .padding(
+                        end = 32.dp,
+                        top = 32.dp
+                    ),
+                text = "Comperio",
+                fontWeight = FontWeight.Bold,
+                // TODO: Fix the size of the font to fit the correct UI system.
+                fontSize = MaterialTheme.typography.h4.fontSize
+            )
+        }
+        
+        Spacer(modifier = Modifier.size(150.dp))
+        
         HorizontalPager(
             state = pagerState,
             verticalAlignment = Alignment.Top
         ) { position ->
             PagerScreen(onBoardingPage = pages[position])
         }
+
         HorizontalPagerIndicator(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             pagerState = pagerState
         )
+
         CompletionButton(Modifier, pagerState) {
             welcomeViewModel.saveOnboardingState(completed = true)
             navController.popBackStack()
             navController.navigate(ScreenHolder.HomeScreenHolder.route)
         }
+
     }
 }
 
 @Composable
 fun PagerScreen(onBoardingPage: OnboardingPage){
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
@@ -75,12 +95,17 @@ fun PagerScreen(onBoardingPage: OnboardingPage){
             painter = painterResource(id = onBoardingPage.image),
             contentDescription = "Pager Description"
         )
+
+        Spacer(modifier = Modifier.size(79.dp))
+
         Text(
-            modifier = Modifier,
+            modifier = Modifier
+                .width(326.dp)
+                .padding(10.dp),
             text = stringResource(onBoardingPage.title),
             fontSize = MaterialTheme.typography.h4.fontSize,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
+            textAlign = TextAlign.Left,
         )
     }
 }
@@ -106,7 +131,7 @@ fun CompletionButton(modifier: Modifier, pagerState: PagerState, onClick: () -> 
                     contentColor = Color.White
                 )
             ) {
-                Text(text = "Finish")
+                Text(text = "Concluir Introdução")
             }
         }
     }
@@ -124,7 +149,7 @@ fun SkipButton(modifier: Modifier, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewFirstOnboardingScreen() {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier) {
         PagerScreen(onBoardingPage = OnboardingPage.Page01)
     }
 }
@@ -132,7 +157,7 @@ fun PreviewFirstOnboardingScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewSecondOnboardingScreen() {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier) {
         PagerScreen(onBoardingPage = OnboardingPage.Page02)
     }
 }
@@ -140,7 +165,7 @@ fun PreviewSecondOnboardingScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewThirdOnboardingScreen() {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier) {
         PagerScreen(onBoardingPage = OnboardingPage.Page03)
     }
 }
