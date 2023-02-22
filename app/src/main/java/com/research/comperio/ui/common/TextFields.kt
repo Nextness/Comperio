@@ -1,4 +1,4 @@
-package com.research.comperio.commonui
+package com.research.comperio.ui.common
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -15,8 +15,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.research.comperio.R
-import com.research.comperio.ui.theme.Contour
 
+// FIXME: Fix colors in this button to match material theme 2.
 @Composable
 fun TextInputField() {
     // mutableState: It return an observable value for Compose. If value changed UI get changed automatically.
@@ -32,7 +32,7 @@ fun TextInputField() {
         label = {
             Text(
                 text = stringResource(id = R.string.label_email),
-                color = MaterialTheme.colors.Contour
+//                color = MaterialTheme.colors.Contour
             )},
         placeholder = {
             Text(text = stringResource(id = R.string.place_holder_email))
@@ -41,21 +41,22 @@ fun TextInputField() {
             Icon(
                 imageVector = Icons.Default.Email,
                 contentDescription = "emailIcon",
-                tint = MaterialTheme.colors.Contour
+//                tint = MaterialTheme.colors.Contour
             )
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = MaterialTheme.colors.Contour,
-            cursorColor = MaterialTheme.colors.Contour,
-            focusedBorderColor = MaterialTheme.colors.Contour,
-            unfocusedBorderColor = MaterialTheme.colors.Contour,
-            focusedLabelColor = MaterialTheme.colors.Contour,
-            unfocusedLabelColor = MaterialTheme.colors.Contour,
-            placeholderColor = MaterialTheme.colors.Contour
-        )
+//        colors = TextFieldDefaults.outlinedTextFieldColors(
+//            textColor = MaterialTheme.colors.Contour,
+//            cursorColor = MaterialTheme.colors.Contour,
+//            focusedBorderColor = MaterialTheme.colors.Contour,
+//            unfocusedBorderColor = MaterialTheme.colors.Contour,
+//            focusedLabelColor = MaterialTheme.colors.Contour,
+//            unfocusedLabelColor = MaterialTheme.colors.Contour,
+//            placeholderColor = MaterialTheme.colors.Contour
+//        )
     )
 }
 
+// FIXME: Fix colors in this button to match material theme 2.
 // Place where information comes from:
 // - https://stackoverflow.com/questions/65304229/toggle-password-field-jetpack-compose
 @Composable
@@ -82,32 +83,18 @@ fun PasswordInputField() {
                 Icon(
                     imageVector  = image,
                     contentDescription = description,
-                    tint = MaterialTheme.colors.Contour
+//                    tint = MaterialTheme.colors.Contour
                 )
             }
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = MaterialTheme.colors.Contour,
-            cursorColor = MaterialTheme.colors.Contour,
-            focusedBorderColor = MaterialTheme.colors.Contour,
-            unfocusedBorderColor = MaterialTheme.colors.Contour,
-            focusedLabelColor = MaterialTheme.colors.Contour,
-            unfocusedLabelColor = MaterialTheme.colors.Contour,
-            placeholderColor = MaterialTheme.colors.Contour
-        )
+//        colors = TextFieldDefaults.outlinedTextFieldColors(
+//            textColor = MaterialTheme.colors.Contour,
+//            cursorColor = MaterialTheme.colors.Contour,
+//            focusedBorderColor = MaterialTheme.colors.Contour,
+//            unfocusedBorderColor = MaterialTheme.colors.Contour,
+//            focusedLabelColor = MaterialTheme.colors.Contour,
+//            unfocusedLabelColor = MaterialTheme.colors.Contour,
+//            placeholderColor = MaterialTheme.colors.Contour
+//        )
     )
-}
-
-
-
-@Preview(showBackground = true, backgroundColor = 0xFF2E004D)
-@Composable
-fun PreviewTextField() {
-    TextInputField()
-}
-
-@Preview(showBackground = true, backgroundColor = 0xFF2E004D)
-@Composable
-fun PreviewPasswordInputField() {
-    PasswordInputField()
 }

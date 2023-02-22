@@ -21,8 +21,6 @@ fun SetupNavGraph(navController: NavHostController, startDestination: String) {
         composable(route = ScreenHolder.OnboardingScreenHolder.route){
             OnboardingScreen(
                 navController = navController,
-                onCompletion = { /*TODO*/ },
-                onSkipIntroduction = {/*TODO*/}
             )
         }
         composable(route = ScreenHolder.HomeScreenHolder.route) {

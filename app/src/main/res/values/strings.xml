@@ -2,6 +2,13 @@
 
     <!-- General Information -->
     <string name="app_name">Comperio</string>
+    <string name="empty_string"> </string>
+
+    <!-- Onboarding Screen Text -->
+    <string name="onboarding_title_01">Estude em qualquer lugar para melhorar o seu conhecimento.</string>
+    <string name="onboarding_title_02">Aprenda usando realidade aumentada e exercícios práticos.</string>
+    <string name="onboarding_title_03">Diverta-se praticando o que aprendeu, jogando sempre que quiser.</string>
+    <string name="onboarding_completion_button">Concluir Introdução</string>
 
     <!-- Login Information -->
     <string name="label_email">Email</string>
@@ -10,9 +17,8 @@
     <string name="place_holder_password">Digite a sua senha</string>
     <string name="hide_password_icon_description">Esconder senha</string>
     <string name="show_password_icon_description">Mostrar senha</string>
-    <string name="onboarding_title_01">Estude em qualquer lugar para melhorar o seu conhecimento.</string>
-    <string name="onboarding_title_02">Aprenda usando realidade aumentada em conjunto com exercícios práticos.</string>
-    <string name="onboarding_title_03">Diverta-se praticando o que aprendeu, jogando sempre que quiser.</string>
+
+
 
     <!-- TBI -->
 

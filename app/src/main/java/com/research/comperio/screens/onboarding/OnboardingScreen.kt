@@ -1,28 +1,25 @@
 package com.research.comperio.screens.onboarding
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
+import com.research.comperio.R
 import com.research.comperio.structures.ScreenHolder
 import com.research.comperio.structures.onboardingStruct.OnboardingPage
+import com.research.comperio.ui.common.ComperioLogoInScreen
 import com.research.comperio.viewmodel.WelcomeViewModel
 
 @ExperimentalAnimationApi
@@ -30,142 +27,105 @@ import com.research.comperio.viewmodel.WelcomeViewModel
 @Composable
 fun OnboardingScreen(
     navController: NavHostController,
-    welcomeViewModel: WelcomeViewModel = hiltViewModel(),
-    onCompletion: () -> Unit,
-    onSkipIntroduction: () -> Unit
+    welcomeViewModel: WelcomeViewModel = hiltViewModel()
 ) {
-
+    val pagerState = rememberPagerState(pageCount = 3)
     val pages = listOf(
         OnboardingPage.Page01,
         OnboardingPage.Page02,
         OnboardingPage.Page03
     )
 
-    val pagerState = rememberPagerState(pageCount = 3)
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.End
+    ) {
+        ComperioLogoInScreen(true)
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        Row(modifier = Modifier
-            .fillMaxWidth(),
-            horizontalArrangement = Arrangement.End){
-            Text(
-                modifier = Modifier
-                    .padding(
-                        end = 32.dp,
-                        top = 32.dp
-                    ),
-                text = "Comperio",
-                fontWeight = FontWeight.Bold,
-                // TODO: Fix the size of the font to fit the correct UI system.
-                fontSize = MaterialTheme.typography.h4.fontSize
-            )
-        }
-        
-        Spacer(modifier = Modifier.size(150.dp))
-        
+        Spacer(modifier = Modifier.size(5.dp))
+
+        HorizontalPagerIndicator(
+            modifier = Modifier.padding(end = 32.dp),
+            activeColor = MaterialTheme.colors.primary,
+            inactiveColor = Color(0xFFD9DAE1),
+            pagerState = pagerState
+        )
+    }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Spacer(modifier = Modifier.size(144.dp))
+
         HorizontalPager(
+            modifier = Modifier,
             state = pagerState,
-            verticalAlignment = Alignment.Top
+            verticalAlignment = Alignment.CenterVertically
         ) { position ->
             PagerScreen(onBoardingPage = pages[position])
         }
 
-        HorizontalPagerIndicator(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            pagerState = pagerState
-        )
+        Spacer(modifier = Modifier.size(102.dp))
 
-        CompletionButton(Modifier, pagerState) {
-            welcomeViewModel.saveOnboardingState(completed = true)
-            navController.popBackStack()
-            navController.navigate(ScreenHolder.HomeScreenHolder.route)
+        Button(
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .width(326.dp)
+                .height(56.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = MaterialTheme.colors.primary,
+                contentColor = MaterialTheme.colors.onPrimary
+            ),
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 0.dp,
+                pressedElevation = 0.dp,
+                disabledElevation = 0.dp
+            ),
+            onClick = {
+                welcomeViewModel.saveOnboardingState(completed = true)
+                navController.popBackStack()
+                navController.navigate(ScreenHolder.HomeScreenHolder.route)
+            }
+        ) {
+            Text(
+                text = stringResource(id = R.string.onboarding_completion_button),
+                style = MaterialTheme.typography.button
+            )
         }
-
     }
 }
 
 @Composable
-fun PagerScreen(onBoardingPage: OnboardingPage){
+fun PagerScreen(onBoardingPage: OnboardingPage) {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top,
     ) {
         Image(
-            modifier = Modifier,
+            modifier = Modifier
+                .align(CenterHorizontally)
+                .height(226.dp)
+                .padding(horizontal = 32.dp),
             painter = painterResource(id = onBoardingPage.image),
             contentDescription = "Pager Description"
         )
 
-        Spacer(modifier = Modifier.size(79.dp))
+        Spacer(modifier = Modifier.size(70.dp))
 
         Text(
             modifier = Modifier
-                .width(326.dp)
-                .padding(10.dp),
+                .align(CenterHorizontally)
+                .padding(vertical = 32.dp, horizontal = 10.dp)
+                .width(326.dp),
             text = stringResource(onBoardingPage.title),
-            fontSize = MaterialTheme.typography.h4.fontSize,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Left,
+            style = MaterialTheme.typography.h1,
+            color = MaterialTheme.colors.primary,
+            textAlign = TextAlign.Left
         )
-    }
-}
-
-
-@ExperimentalPagerApi
-@ExperimentalAnimationApi
-@Composable
-fun CompletionButton(modifier: Modifier, pagerState: PagerState, onClick: () -> Unit) {
-    Row(
-        modifier = modifier
-            .padding(horizontal = 40.dp),
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        AnimatedVisibility(
-            modifier = Modifier.fillMaxWidth(),
-            visible = pagerState.currentPage == 2
-        ) {
-            Button(
-                onClick = onClick,
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = Color.White
-                )
-            ) {
-                Text(text = "Concluir Introdução")
-            }
-        }
-    }
-}
-
-@ExperimentalPagerApi
-@ExperimentalAnimationApi
-@Composable
-fun SkipButton(modifier: Modifier, onClick: () -> Unit) {
-
-}
-
-// Previews
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewFirstOnboardingScreen() {
-    Column(modifier = Modifier) {
-        PagerScreen(onBoardingPage = OnboardingPage.Page01)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewSecondOnboardingScreen() {
-    Column(modifier = Modifier) {
-        PagerScreen(onBoardingPage = OnboardingPage.Page02)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewThirdOnboardingScreen() {
-    Column(modifier = Modifier) {
-        PagerScreen(onBoardingPage = OnboardingPage.Page03)
     }
 }
