@@ -1,11 +1,10 @@
-package com.research.comperio.commonui
+package com.research.comperio.ui.common
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,12 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.research.comperio.ui.theme.Neutral10
-import com.research.comperio.ui.theme.Primary90
 
+
+// FIXME: Fix colors in this button to match material theme 2.
 @Composable
 fun ComperioButton(displayString: String, backgroundColor: Color, fontColor: Color, onClick: () -> Unit) {
     Button(
@@ -42,10 +40,4 @@ fun ComperioButton(displayString: String, backgroundColor: Color, fontColor: Col
 
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewComperioButton() {
-    ComperioButton("Acessar Conta", MaterialTheme.colors.Neutral10, MaterialTheme.colors.Primary90, {})
 }
