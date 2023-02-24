@@ -9,29 +9,44 @@ import androidx.compose.ui.unit.sp
 import com.research.comperio.R
 
 val Satoshi = FontFamily(
-    Font(R.font.satoshi_regular),
-    Font(R.font.satoshi_bold, FontWeight.Bold)
+    Font(R.font.satoshi_regular, FontWeight.Normal),
+    Font(R.font.satoshi_bold, FontWeight.Bold),
 )
 
 // Set of Material typography styles to start with
 val Typography = Typography(
+
     h1 = TextStyle(
+        fontFamily = Satoshi,
+        fontWeight = FontWeight.Bold,
+        fontSize = 42.sp
+    ),
+
+    h2 = TextStyle(
       fontFamily = Satoshi,
       fontWeight = FontWeight.Bold,
       fontSize = 32.sp
     ),
 
     button = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = Satoshi,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp
     ),
 
     body1 = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = Satoshi,
+        fontWeight = FontWeight.Normal,
+        fontSize = 21.sp
+    ),
+
+    body2 = TextStyle(
+        fontFamily = Satoshi,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     )
+
+
     /* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,
