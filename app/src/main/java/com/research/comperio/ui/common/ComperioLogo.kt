@@ -14,9 +14,9 @@ import androidx.compose.ui.unit.dp
 import com.research.comperio.R
 
 @Composable
-fun ComperioLogoInScreen(show: Boolean, logoColor: Color) {
+fun ComperioLogoInScreen(show: Boolean, logoColor: Color, modifier: Modifier = Modifier) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
 //            .padding(top = 32.dp, end = 32.dp),
         horizontalArrangement = Arrangement.End
