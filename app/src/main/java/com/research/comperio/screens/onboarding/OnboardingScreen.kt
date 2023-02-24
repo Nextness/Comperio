@@ -2,6 +2,8 @@ package com.research.comperio.screens.onboarding
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -36,65 +38,71 @@ fun OnboardingScreen(
         OnboardingPage.Page03
     )
 
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.End
-    ) {
-        ComperioLogoInScreen(show = true, logoColor = MaterialTheme.colors.primary)
+    Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.End
+        ) {
+            ComperioLogoInScreen(
+                show = true,
+                logoColor = MaterialTheme.colors.primary,
+                modifier = Modifier.padding(end = 32.dp, top = 32.dp)
+            )
 
-        Spacer(modifier = Modifier.size(5.dp))
+            Spacer(modifier = Modifier.size(5.dp))
 
-        HorizontalPagerIndicator(
-            modifier = Modifier.padding(end = 32.dp),
-            activeColor = MaterialTheme.colors.primary,
-            inactiveColor = Color(0xFFD9DAE1),
-            pagerState = pagerState
-        )
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+            HorizontalPagerIndicator(
+                modifier = Modifier.padding(end = 32.dp),
+                activeColor = MaterialTheme.colors.primary,
+                inactiveColor = Color(0xFFD9DAE1),
+                pagerState = pagerState
+            )
+        }
 
         Spacer(modifier = Modifier.size(144.dp))
 
-        HorizontalPager(
-            modifier = Modifier,
-            state = pagerState,
-            verticalAlignment = Alignment.CenterVertically
-        ) { position ->
-            PagerScreen(onBoardingPage = pages[position])
-        }
-
-        Spacer(modifier = Modifier.size(102.dp))
-
-        Button(
-            modifier = Modifier
-                .padding(horizontal = 32.dp)
-                .width(326.dp)
-                .height(56.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MaterialTheme.colors.primary,
-                contentColor = MaterialTheme.colors.onPrimary
-            ),
-            elevation = ButtonDefaults.elevation(
-                defaultElevation = 0.dp,
-                pressedElevation = 0.dp,
-                disabledElevation = 0.dp
-            ),
-            onClick = {
-                welcomeViewModel.saveOnboardingState(completed = true)
-                navController.popBackStack()
-                navController.navigate(ScreenHolder.HomeScreenHolder.route)
-            }
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = stringResource(id = R.string.onboarding_completion_button),
-                style = MaterialTheme.typography.button
-            )
+
+            HorizontalPager(
+                modifier = Modifier,
+                state = pagerState,
+                verticalAlignment = Alignment.CenterVertically
+            ) { position ->
+                PagerScreen(onBoardingPage = pages[position])
+            }
+
+            Spacer(modifier = Modifier.size(70.dp))
+
+            Button(
+                modifier = Modifier
+                    .padding(horizontal = 32.dp)
+                    .width(326.dp)
+                    .height(56.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = MaterialTheme.colors.primary,
+                    contentColor = MaterialTheme.colors.onPrimary
+                ),
+                elevation = ButtonDefaults.elevation(
+                    defaultElevation = 0.dp,
+                    pressedElevation = 0.dp,
+                    disabledElevation = 0.dp
+                ),
+                onClick = {
+                    welcomeViewModel.saveOnboardingState(completed = true)
+                    navController.popBackStack()
+                    navController.navigate(ScreenHolder.HomeScreenHolder.route)
+                }
+            ) {
+                Text(
+                    text = stringResource(id = R.string.onboarding_completion_button),
+                    style = MaterialTheme.typography.button
+                )
+            }
         }
     }
 }
