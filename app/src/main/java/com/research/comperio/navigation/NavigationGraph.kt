@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.research.comperio.screens.onboarding.OnboardingScreen
 import androidx.navigation.compose.composable
+import com.research.comperio.screens.login.LoginLandingPage
 import com.research.comperio.structures.ScreenHolder
 
 
@@ -24,7 +25,7 @@ fun SetupNavGraph(navController: NavHostController, startDestination: String) {
             )
         }
         composable(route = ScreenHolder.HomeScreenHolder.route) {
-//            HomeScreen()
+            LoginLandingPage()
         }
     }
 }

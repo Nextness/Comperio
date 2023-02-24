@@ -41,7 +41,7 @@ fun OnboardingScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.End
     ) {
-        ComperioLogoInScreen(true)
+        ComperioLogoInScreen(show = true, logoColor = MaterialTheme.colors.primary)
 
         Spacer(modifier = Modifier.size(5.dp))
 
@@ -123,7 +123,7 @@ fun PagerScreen(onBoardingPage: OnboardingPage) {
                 .padding(vertical = 32.dp, horizontal = 10.dp)
                 .width(326.dp),
             text = stringResource(onBoardingPage.title),
-            style = MaterialTheme.typography.h1,
+            style = MaterialTheme.typography.h2,
             color = MaterialTheme.colors.primary,
             textAlign = TextAlign.Left
         )

@@ -10,6 +10,13 @@
     <string name="onboarding_title_03">Diverta-se praticando o que aprendeu, jogando sempre que quiser.</string>
     <string name="onboarding_completion_button">Concluir Introdução</string>
 
+    <!-- Login Lading Information -->
+    <string name="label_hero_message">Entendendo o mundo de um jeito diferente.</string>
+    <string name="label_hero_sub_message">Aprenda diversos assuntos utilizando realidade aumentada na palma da sua mão.</string>
+    <string name="button_lets_start">Vamos começar</string>
+    <string name="label_no_account_message">Não tem uma conta?</string>
+    <string name="label_register_now">Cadastre-se agora!</string>
+
     <!-- Login Information -->
     <string name="label_email">Email</string>
     <string name="place_holder_email">Digite o seu email</string>
