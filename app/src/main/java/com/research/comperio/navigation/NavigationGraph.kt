@@ -8,6 +8,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.research.comperio.screens.onboarding.OnboardingScreen
 import androidx.navigation.compose.composable
 import com.research.comperio.screens.login.LoginLandingPage
+import com.research.comperio.screens.login.LoginScreen
 import com.research.comperio.structures.ScreenHolder
 
 
@@ -19,13 +20,14 @@ fun SetupNavGraph(navController: NavHostController, startDestination: String) {
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(route = ScreenHolder.OnboardingScreenHolder.route){
+        composable(route = ScreenHolder.OnboardingScreenHolder.route) {
             OnboardingScreen(
                 navController = navController,
             )
         }
         composable(route = ScreenHolder.HomeScreenHolder.route) {
-            LoginLandingPage()
+            LoginScreen()
+            // LoginLandingPage()
         }
     }
 }
