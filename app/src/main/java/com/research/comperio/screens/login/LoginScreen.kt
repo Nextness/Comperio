@@ -20,18 +20,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.research.comperio.ui.common.ComperioLogoInScreen
 import com.research.comperio.R
+import com.research.comperio._debug.DEVEL_Button
+import com.research.comperio.structures.ScreenHolder
 import com.research.comperio.ui.theme.Satoshi
 
-
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navHostController: NavHostController) {
     Column(
         modifier = Modifier
             .padding(32.dp)
             .fillMaxSize()
     ) {
+
+        DEVEL_Button(
+            navHostController = navHostController,
+            route = ScreenHolder.OnboardingScreenHolder.route
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -42,12 +50,18 @@ fun LoginScreen() {
                 modifier = Modifier,
                 verticalAlignment = Alignment.CenterVertically
             ){
-                Icon(
-                    imageVector = Icons.Rounded.ArrowBack,
-                    contentDescription = "",
-                    tint = MaterialTheme.colors.primary,
-                    modifier = Modifier.size(32.dp)
-                )
+                IconButton(onClick = {
+                    navHostController.popBackStack()
+                }
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.ArrowBack,
+                        contentDescription = "",
+                        tint = MaterialTheme.colors.primary,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
+
                 ComperioLogoInScreen(show = true, logoColor = MaterialTheme.colors.primary)
             }
         }
@@ -178,6 +192,5 @@ fun LoginScreen() {
                 )
             }
         }
-
     }
 }

@@ -1,6 +1,7 @@
 package com.research.comperio.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -11,10 +12,8 @@ import com.research.comperio.screens.login.LoginLandingPage
 import com.research.comperio.screens.login.LoginScreen
 import com.research.comperio.structures.ScreenHolder
 
-
-@ExperimentalAnimationApi
-@ExperimentalPagerApi
 @Composable
+@ExperimentalAnimationApi @ExperimentalPagerApi
 fun SetupNavGraph(navController: NavHostController, startDestination: String) {
     NavHost(
         navController = navController,
@@ -25,9 +24,13 @@ fun SetupNavGraph(navController: NavHostController, startDestination: String) {
                 navController = navController,
             )
         }
-        composable(route = ScreenHolder.HomeScreenHolder.route) {
-            LoginScreen()
-            // LoginLandingPage()
+
+        composable(route = ScreenHolder.LadingLoginHolder.route){
+            LoginLandingPage(navHostController = navController)
+        }
+
+        composable(route = ScreenHolder.AuthenticationHolder.route){
+            LoginScreen(navHostController = navController)
         }
     }
 }

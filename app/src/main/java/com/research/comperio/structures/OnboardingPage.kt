@@ -1,29 +1,31 @@
 package com.research.comperio.structures
 
 import androidx.annotation.DrawableRes
+import androidx.compose.ui.graphics.Color
 import com.research.comperio.R
 
-sealed class OnboardingPage(
+sealed class OnboardingPage (
     @DrawableRes
-    val Image: Int,
-    val Title: String,
-    val Description: String
-) {
-    object FirstPage: OnboardingPage(
-        Image = R.drawable.splashscreen,
-        Title = "First Page",
-        Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed luctus urna."
+    val image: Int,
+    val title: Int,
+    val backgroundColor: Color?
+    ) {
+
+    object Page01: OnboardingPage(
+        image = R.drawable.personinmobile,
+        title = R.string.onboarding_title_01,
+        backgroundColor = null
     )
 
-    object SecondPage: OnboardingPage(
-        Image = R.drawable.splashscreen,
-        Title = "Second Page",
-        Description = "Fusce dolor tellus, volutpat iaculis ligula ut, varius tristique odio."
+    object Page02: OnboardingPage(
+        image = R.drawable.personinaugmentedreality,
+        title = R.string.onboarding_title_02,
+        backgroundColor = null
     )
 
-    object ThirdPage: OnboardingPage(
-        Image = R.drawable.splashscreen,
-        Title = "Third Page",
-        Description = " Phasellus lacinia nunc quis enim varius, at suscipit sapien pellentesque."
+    object Page03: OnboardingPage(
+        image = R.drawable.personinplaying,
+        title = R.string.onboarding_title_03,
+        backgroundColor = null
     )
 }

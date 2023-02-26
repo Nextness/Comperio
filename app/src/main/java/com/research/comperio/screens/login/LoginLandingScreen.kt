@@ -21,18 +21,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.research.comperio.R
+import com.research.comperio.structures.ScreenHolder
 import com.research.comperio.ui.common.ComperioLogoInScreen
 import com.research.comperio.ui.theme.Satoshi
 
 @Composable
-fun LoginLandingPage() {
+fun LoginLandingPage(navHostController: NavHostController) {
     Column(
         modifier = Modifier
             .background(MaterialTheme.colors.primary)
             .padding(32.dp)
             .fillMaxSize()
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -77,7 +80,9 @@ fun LoginLandingPage() {
                     pressedElevation = 0.dp,
                     disabledElevation = 0.dp
                 ),
-                onClick = {}
+                onClick = {
+                    navHostController.navigate(route = ScreenHolder.AuthenticationHolder.route)
+                }
             ) {
                 Text(
                     modifier = Modifier.align(CenterVertically),
