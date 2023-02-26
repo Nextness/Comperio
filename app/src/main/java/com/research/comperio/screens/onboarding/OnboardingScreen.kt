@@ -2,8 +2,6 @@ package com.research.comperio.screens.onboarding
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -20,13 +18,12 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
 import com.research.comperio.R
 import com.research.comperio.structures.ScreenHolder
-import com.research.comperio.structures.onboardingStruct.OnboardingPage
+import com.research.comperio.structures.OnboardingPage
 import com.research.comperio.ui.common.ComperioLogoInScreen
 import com.research.comperio.viewmodel.WelcomeViewModel
 
-@ExperimentalAnimationApi
-@ExperimentalPagerApi
 @Composable
+@ExperimentalAnimationApi @ExperimentalPagerApi
 fun OnboardingScreen(
     navController: NavHostController,
     welcomeViewModel: WelcomeViewModel = hiltViewModel()
@@ -95,7 +92,7 @@ fun OnboardingScreen(
                 onClick = {
                     welcomeViewModel.saveOnboardingState(completed = true)
                     navController.popBackStack()
-                    navController.navigate(ScreenHolder.HomeScreenHolder.route)
+                    navController.navigate(ScreenHolder.LadingLoginHolder.route)
                 }
             ) {
                 Text(

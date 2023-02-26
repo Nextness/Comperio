@@ -24,7 +24,7 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             repository.readOnboardingState().collect { completed ->
                 if (completed) {
-                    _startDestination.value = ScreenHolder.HomeScreenHolder.route
+                    _startDestination.value = ScreenHolder.LadingLoginHolder.route
                 } else {
                     _startDestination.value = ScreenHolder.OnboardingScreenHolder.route
                 }
