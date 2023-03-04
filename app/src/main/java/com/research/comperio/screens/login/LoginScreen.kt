@@ -157,6 +157,7 @@ fun LoginScreen(navHostController: NavHostController) {
                     disabledElevation = 0.dp
                 ),
                 onClick = {
+                    navHostController.navigate(route = ScreenHolder.HomeScreenHolder.route)
                 /* TODO:
                 *    Create validation function which passes values from the fields.
                 *    if it exists move to the main screen, else fail and say the password
