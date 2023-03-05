@@ -26,6 +26,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        aaptOptions {
+            noCompress 'filamat', 'ktx'
+        }
     }
 
     compileOptions {
@@ -56,6 +60,8 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.material:material:1.8.0'
     def core_ktx_version = "1.7.0" /* noinspection GradleDependency */
     implementation("androidx.core:core-ktx:$core_ktx_version")
 
@@ -113,7 +119,11 @@ dependencies {
     def hilt_compiler_version = "1.0.0"
     kapt("androidx.hilt:hilt-compiler:$hilt_compiler_version")
 
-    implementation "androidx.compose.ui:ui-viewbinding:1.3.3"
+    def view_binding_version = "1.3.3"
+    implementation("androidx.compose.ui:ui-viewbinding:$view_binding_version")
+
+    def ar_scene_view_version = "0.9.4" /* noinspection GradleDependency */
+    implementation("io.github.sceneview:arsceneview:$ar_scene_view_version")
 }
 
 kapt {
