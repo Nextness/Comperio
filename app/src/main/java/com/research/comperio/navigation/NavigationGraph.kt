@@ -1,8 +1,14 @@
 package com.research.comperio.navigation
 
 import android.graphics.Color
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -10,10 +16,13 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.research.comperio.screens.onboarding.OnboardingScreen
 import androidx.navigation.compose.composable
 import com.research.comperio.TestLayout
+import com.research.comperio.databinding.ArSceneLayoutBinding
 import com.research.comperio.databinding.TestLayoutBinding
 import com.research.comperio.screens.login.LoginLandingPage
 import com.research.comperio.screens.login.LoginScreen
 import com.research.comperio.structures.ScreenHolder
+import io.github.sceneview.ar.ARScene
+import io.github.sceneview.ar.node.ArNode
 
 @Composable
 @ExperimentalAnimationApi @ExperimentalPagerApi
@@ -37,12 +46,13 @@ fun SetupNavGraph(navController: NavHostController, startDestination: String) {
         }
 
         composable(route = ScreenHolder.HomeScreenHolder.route){
-            XmlLayout()
+             XmlLayout()
         }
     }
 }
 
 @Composable
 fun XmlLayout() {
-    AndroidViewBinding(factory = TestLayoutBinding::inflate)
+    AndroidViewBinding(factory = ArSceneLayoutBinding::inflate)
+
 }
