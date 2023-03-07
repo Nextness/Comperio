@@ -110,7 +110,7 @@ class ArActivity : AppCompatActivity(R.layout.ar_scene_layout) {
             applyPoseRotation = model.applyPoseRotation
             loadModelGlbAsync(
                 context = this@ArActivity,
-                lifecycle = lifecycle,
+//                lifecycle = lifecycle,
                 glbFileLocation = model.fileLocation,
                 autoAnimate = true,
                 scaleToUnits = model.scaleUnits,
