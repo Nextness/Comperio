@@ -1,40 +1,169 @@
 <resources>
+    <string name="app_name">
+        Comperio
+    </string>
 
-    <!-- General Information -->
-    <string name="app_name">Comperio</string>
-    <string name="empty_string"> </string>
+    <!-- TEST SPECIFIC STRING - test_<location>_<name> -->
+    <string name="test.comperio.hello_test">
+        Hello world!
+    </string>
 
-    <!-- Onboarding Screen Text -->
-    <string name="onboarding_title_01">Estude em qualquer lugar para melhorar o seu conhecimento.</string>
-    <string name="onboarding_title_02">Aprenda usando realidade aumentada e exercícios práticos.</string>
-    <string name="onboarding_title_03">Diverta-se praticando o que aprendeu, jogando sempre que quiser.</string>
-    <string name="onboarding_completion_button">Concluir Introdução</string>
+    <!-- SCREEN SPECIFIC STRINGS - <type>_<location>_<name> -->
+    <string name="landing_screen.text.hero_message">
+        Understanding the world with Augmented Reality.
+    </string>
+    <string name="landing_screen.text.action">
+        Learn different subjects using augmented reality at the palm of your hand.
+    </string>
+    <string name="landing_screen.text.button_start">
+        Lets start
+    </string>
 
-    <!-- Login Lading Information -->
-    <string name="label_hero_message">Entendendo o mundo de um jeito diferente.</string>
-    <string name="label_hero_sub_message">Aprenda diversos assuntos utilizando realidade aumentada na palma da sua mão.</string>
-    <string name="button_lets_start">Vamos começar</string>
-    <string name="label_no_account_message">Não tem uma conta?</string>
-    <string name="label_register_now">Cadastre-se agora!</string>
+    <string name="login_text.text.no_account">
+        Don\'t have an account?
+    </string>
+    <string name="login_text.text.register">
+        Register now!
+    </string>
 
-    <!-- Login Information -->
-    <string name="label_email">E-mail</string>
-    <string name="place_holder_email">Digite o seu email</string>
-    <string name="label_password">Senha</string>
-    <string name="place_holder_password">Digite a sua senha</string>
-    <string name="hide_password_icon_description">Esconder senha</string>
-    <string name="show_password_icon_description">Mostrar senha</string>
-    <string name="label_access_account">Login</string>
-    <string name="label_forgot_password">Esqueci a senha</string>
+    <string name="login_screen.text.action_login">
+        Login
+    </string>
+    <string name="login_screen.label.button_login">
+        Login
+    </string>
+    <string name="login_screen.text.button_forgot_password">
+        Forgot password
+    </string>
+    <string name="login_screen.content_description.login_image">
+        Generic login image
+    </string>
+    <string name="login_screen.text.email">
+        E-mail
+    </string>
+    <string name="login_screen.text.password">
+        Password
+    </string>
 
+    <string name="comperio_logo_header.content_description.arrow_back">
+        Arrow to go back to previous screen
+    </string>
 
+    <string name="password_text_field.place_holder.write_email">
+        Type your e-mail
+    </string>
+    <string name="password_text_field.place_holder.write_password">
+        Type your password
+    </string>
+    <string name="password_text_field.content_description.show_password">
+        Icon to show password
+    </string>
+    <string name="password_text_field.content_description.hide_password">
+        Icon to hide password
+    </string>
 
-    <!-- TBI -->
-    <string name="place_object">Place object</string>
-    <string name="new_object">New object</string>
-    <string name="instant_placement">Instant Placement</string>
-    <string name="depth_placement">Depth Placement</string>
-    <string name="plane_placement">Plane Placement</string>
-    <string name="best_placement">Best Placement</string>
+    <string name="account_creation.text.continue">
+        Continue
+    </string>
+    <string name="account_creation.place_holder.first_name">
+        Type your first name
+    </string>
+    <string name="account_creation.place_holder.last_name">
+        Type your last name
+    </string>
+    <string name="account_creation.place_holder.screen_born_day">
+        Day
+    </string>
+    <string name="account_creation.place_holder.screen_born_month">
+        Month
+    </string>
+    <string name="account_creation.place_holder.screen_born_year">
+        Year
+    </string>
+    <string name="account_creation.place_holder.screen_gender">
+        Select your gender
+    </string>
+    <string name="account_creation.place_holder.create_password">
+        Type you password
+    </string>
+    <string name="account_creation.place_holder.confirm_password">
+        Type your password again
+    </string>
+    <string name="account_creation.place_holder.access_account">
+        Access my account
+    </string>
+    <string name="account_creation.place_holder.conclude_account_creation">
+        Conclude registration
+    </string>
+    <string name="account_creation.text.what_is_your_name_question">
+        What is your name?
+    </string>
+    <string name="account_creation.text.first_name">
+        First Name
+    </string>
+    <string name="account_creation.text.last_name">
+        Last Name
+    </string>
+    <string name="account_creation.text.additional_information">
+        We need some additional basic information
+    </string>
+    <string name="account_creation.text.born_date">
+        Born Date
+    </string>
+    <string name="account_creation.text.gender">
+        Gender
+    </string>
+    <string name="account_creation.dropdown_gender_option_1">
+        Prefer not mentioning
+    </string>
+    <string name="account_creation.dropdown_gender_option_2">
+        Male
+    </string>
+    <string name="account_creation.dropdown_gender_option_3">
+        Female
+    </string>
+    <string name="account_creation.dropdown_gender_option_4">
+        Non-binary
+    </string>
+    <string name="account_creation.dropdown_gender_option_5">
+        Other
+    </string>
+    <string name="account_creation.text.what_is_your_email_question">
+        What is your e-mail?
+    </string>
+    <string name="account_creation.text.create_password">
+        Finally, create a password
+    </string>
+    <string name="account_creation.text.password">
+        Password
+    </string>
+    <string name="account_creation.text.confirm_password">
+        Confirm your password
+    </string>
+    <string name="account_creation.text.successful_account_creation">
+        Account created successfully!
+    </string>
+    <string name="account_creation.content_description.confirmation_email_sent">
+        Send e-mail confirmation
+    </string>
+    <string name="account_creation.text.confirmation_email_sent">
+        We send a confirmation e-mail to
+    </string>
 
+    <string name="home_screen.place_holder.course">
+        Select a course
+    </string>
+    <string name="home_screen.place_holder.class">
+        Select a class
+    </string>
+    <string name="home_screen.label.add_activity">
+        Add Activity
+    </string>
+    <string name="home_screen.label.start_activities">
+        Start Activities
+    </string>
+
+    <string name="tutorial_activity.label.add_model">
+        Anchor Model
+    </string>
 </resources>

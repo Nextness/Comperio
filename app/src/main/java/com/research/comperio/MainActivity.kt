@@ -3,48 +3,31 @@ package com.research.comperio
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.getValue
-import com.research.comperio.ui.theme.ComperioTheme
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.research.comperio.navigation.SetupNavGraph
-import com.research.comperio.viewmodel.SplashViewModel
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.research.comperio.ui.screen_navigation.root_navigation_graph
+import com.research.comperio.theme.ComperioTheme
 
-@ExperimentalAnimationApi
-@ExperimentalPagerApi
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var splashViewModel: SplashViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        installSplashScreen().setKeepOnScreenCondition{
-            !splashViewModel.isLoading.value
-        }
-
-        // This is responsible for initializing the application itself.
         setContent {
+            val system_ui_controller = rememberSystemUiController()
+            system_ui_controller.isStatusBarVisible = false
+
+            WindowCompat.getInsetsController(window, window.decorView).apply {
+                if (system_ui_controller.isStatusBarVisible) systemBarsBehavior =
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+
             ComperioTheme {
-                val screen by splashViewModel.startDestination
-                val navController = rememberNavController()
-                SetupNavGraph(navController = navController, startDestination = screen)
+                root_navigation_graph(
+                    navigation_controller = rememberNavController()
+                )
             }
         }
     }
 }
-
-class TestLayout : AppCompatActivity() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-}
-

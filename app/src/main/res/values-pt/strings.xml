@@ -1,0 +1,169 @@
+<resources>
+    <string name="app_name">
+        Comperio
+    </string>
+
+    <!-- TEST SPECIFIC STRING - <location>_test_<name> -->
+    <string name="test.comperio.hello_test">
+        Olá mundo!
+    </string>
+
+    <!-- SCREEN SPECIFIC STRINGS - <location>_<type>_<name> -->
+    <string name="landing_screen.text.hero_message">
+        Entendendo o mundo usando Realidade Aumentada.
+    </string>
+    <string name="landing_screen.text.action">
+        Aprenda diversos assuntos utilizando realidade aumentada na palma da sua mão.
+    </string>
+    <string name="landing_screen.text.button_start">
+        Vamos começar
+    </string>
+
+    <string name="login_text.text.no_account">
+        Não tem uma conta?
+    </string>
+    <string name="login_text.text.register">
+        Registre-se agora!
+    </string>
+
+    <string name="login_screen.text.action_login">
+        Faça seu login
+    </string>
+    <string name="login_screen.label.button_login">
+        Login
+    </string>
+    <string name="login_screen.text.button_forgot_password">
+        Esqueci a senha
+    </string>
+    <string name="login_screen.content_description.login_image">
+        Imagem genérica de login
+    </string>
+    <string name="login_screen.text.email">
+        E-mail
+    </string>
+    <string name="login_screen.text.password">
+        Senha
+    </string>
+
+    <string name="comperio_logo_header.content_description.arrow_back">
+        Flecha para voltar a tela anterior
+    </string>
+
+    <string name="password_text_field.place_holder.write_email">
+        Digite seu e-mail
+    </string>
+    <string name="password_text_field.place_holder.write_password">
+        Digite sua senha
+    </string>
+    <string name="password_text_field.content_description.show_password">
+        Icone para mostrar a senha
+    </string>
+    <string name="password_text_field.content_description.hide_password">
+        Icone para esconder a senha
+    </string>
+
+    <string name="account_creation.text.continue">
+        Continuar
+    </string>
+    <string name="account_creation.place_holder.first_name">
+        Digite o seu nome
+    </string>
+    <string name="account_creation.place_holder.last_name">
+        Digite o seu sobrenome
+    </string>
+    <string name="account_creation.place_holder.screen_born_day">
+        Dia
+    </string>
+    <string name="account_creation.place_holder.screen_born_month">
+        Mês
+    </string>
+    <string name="account_creation.place_holder.screen_born_year">
+        Ano
+    </string>
+    <string name="account_creation.place_holder.screen_gender">
+        Selecione o seu genêro
+    </string>
+    <string name="account_creation.place_holder.create_password">
+        Digite sua senha
+    </string>
+    <string name="account_creation.place_holder.confirm_password">
+        Digite sua senha novamente
+    </string>
+    <string name="account_creation.place_holder.access_account">
+        Accesar a minha conta
+    </string>
+    <string name="account_creation.place_holder.conclude_account_creation">
+        Finalizar cadastro
+    </string>
+    <string name="account_creation.text.what_is_your_name_question">
+        Qual o seu nome?
+    </string>
+    <string name="account_creation.text.first_name">
+        Nome
+    </string>
+    <string name="account_creation.text.last_name">
+        Sobrenome
+    </string>
+    <string name="account_creation.text.additional_information">
+        Precisamos de algumas informações básicas
+    </string>
+    <string name="account_creation.text.born_date">
+        Data de nascimento
+    </string>
+    <string name="account_creation.text.gender">
+        Gênero
+    </string>
+    <string name="account_creation.dropdown_gender_option_1">
+        Prefiro não dizer
+    </string>
+    <string name="account_creation.dropdown_gender_option_2">
+        Masculino
+    </string>
+    <string name="account_creation.dropdown_gender_option_3">
+        Feminino
+    </string>
+    <string name="account_creation.dropdown_gender_option_4">
+        Não-binário
+    </string>
+    <string name="account_creation.dropdown_gender_option_5">
+        Outro
+    </string>
+    <string name="account_creation.text.what_is_your_email_question">
+        Qual o seu e-mail?
+    </string>
+    <string name="account_creation.text.create_password">
+        Por último, crie uma senha
+    </string>
+    <string name="account_creation.text.password">
+        Senha
+    </string>
+    <string name="account_creation.text.confirm_password">
+        Confirme sua senha
+    </string>
+    <string name="account_creation.text.successful_account_creation">
+        Conta criada com sucesso!
+    </string>
+    <string name="account_creation.content_description.confirmation_email_sent">
+        E-mail de confirmação enviado
+    </string>
+    <string name="account_creation.text.confirmation_email_sent">
+        Mandamos um email de confirmação para
+    </string>
+
+    <string name="home_screen.place_holder.course">
+        Selecione um curso
+    </string>
+    <string name="home_screen.place_holder.class">
+        Selecione uma classe
+    </string>
+    <string name="home_screen.label.add_activity">
+        Adicionar Atividade
+    </string>
+    <string name="home_screen.label.start_activities">
+        Iniciar Atividades
+    </string>
+
+    <string name="tutorial_activity.label.add_model">
+        Posicionar Modelo
+    </string>
+</resources>
