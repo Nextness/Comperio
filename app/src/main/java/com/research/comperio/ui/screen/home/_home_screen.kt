@@ -15,7 +15,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
@@ -46,19 +48,26 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.research.comperio.R
+import com.research.comperio.theme.comperio_black_dark
+import com.research.comperio.theme.comperio_light_background
+import com.research.comperio.theme.comperio_light_gray
+import com.research.comperio.theme.extended_color_scheme
 import com.research.comperio.ui.common.comperio_component_corner_radius
 import com.research.comperio.ui.common.comperio_dropdown_big
 import com.research.comperio.ui.common.default_button
@@ -66,14 +75,122 @@ import com.research.comperio.ui.common.default_button_with_adjustments
 import com.research.comperio.ui.common.set_screen_orientation
 import com.research.comperio.ui.screen_navigation.comperio_navigation
 import com.research.comperio.theme.main_color
-
+import com.research.comperio.theme.satoshi_font_family
+import com.research.comperio.ui.common.header_comperio_logo
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("ComposableNaming")
 fun home_screen(navigation_controller: NavController, content_padding: PaddingValues) {
     set_screen_orientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-    Spacer(modifier = Modifier.height(11.dp).padding(content_padding))
+    Column(
+        verticalArrangement = Arrangement.spacedBy((-10).dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.extended_color_scheme.primary)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color(0x3F633AEF), Color(0x59FFFFFF)),
+                        startY = 0f,
+                        endY = 1000f
+                    )
+                )
+                .padding(all=32.dp)
+        ) {
+            header_comperio_logo()
+            Spacer(modifier = Modifier.height(44.dp))
+            Text(
+                text = "Você já pode começar\n" +
+                        "uma atividade!",
+                color = Color(0xFFFFFFFF),
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Normal,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(44.dp))
+        }
+        Column(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp))
+                .background(Color(0xFFFFFFFF))
+                .padding(all=15.dp)
+        ) {
+            Spacer(modifier = Modifier.height(30.dp))
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Eletromagnetismo",
+                color = Color(0xFF101215),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Left
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(
+                text = "O eletromagnetismo é uma das forças fundamentais da natureza que lida com a interação entre campos elétricos e magnéticos. Entenda estes conceitos com atividades práticas.",
+                color = Color(0xFF101215),
+                style = TextStyle(
+                    fontFamily = satoshi_font_family,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 18.sp
+                ),
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(modifier = Modifier.height(25.dp))
+            default_button_with_adjustments(
+                button_label = R.string.home_screen_label_tutorial,
+                button_color=MaterialTheme.extended_color_scheme.primary,
+                label_color = MaterialTheme.extended_color_scheme.on_primary_text_color,
+                modifier = Modifier.fillMaxWidth().height(70.dp).clip(RoundedCornerShape(5.dp)),
+                on_click = {}
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            default_button_with_adjustments(
+                button_label = R.string.home_screen_label_first_activity,
+                button_color=MaterialTheme.extended_color_scheme.primary,
+                label_color = MaterialTheme.extended_color_scheme.on_primary_text_color,
+                modifier = Modifier.fillMaxWidth().height(70.dp).clip(RoundedCornerShape(5.dp)),
+                on_click = {}
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            default_button_with_adjustments(
+                button_label = R.string.home_screen_label_second_activity,
+                button_color= comperio_light_background,
+                label_color = comperio_black_dark,
+                modifier = Modifier.fillMaxWidth().height(70.dp).clip(RoundedCornerShape(5.dp)),
+                on_click = {}
+            )
+            Spacer(modifier = Modifier.height(40.dp))
+            Text(
+                modifier = Modifier.fillMaxWidth().height(70.dp),
+                text = "Não se preocupe, logo novas atividades serão adicionadas.",
+                color = Color(0xFF101215),
+                style = TextStyle(
+                    fontFamily = satoshi_font_family,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 14.sp
+                ),
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Normal
+            )
+        }
+    }
+}
+
+@Composable
+@SuppressLint("ComposableNaming")
+fun home_screen_future_implementation(navigation_controller: NavController, content_padding: PaddingValues) {
+    set_screen_orientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+    Spacer(modifier = Modifier
+        .height(11.dp)
+        .padding(content_padding))
     Column(
         modifier = Modifier
             .padding(content_padding)
@@ -213,23 +330,27 @@ fun LazyListScope.lazy_row_item_content() {
 }
 
 @Suppress("FunctionName")
-fun Modifier.dashed_border(strokeWidth: Dp, color: Color, cornerRadiusDp: Dp) = composed(factory = {
-    val density = LocalDensity.current
-    val strokeWidthPx = density.run { strokeWidth.toPx() }
-    val cornerRadiusPx = density.run { cornerRadiusDp.toPx() }
+fun Modifier.dashed_border(strokeWidth: Dp, color: Color, cornerRadiusDp: Dp) = composed(
+    factory = {
+        val density = LocalDensity.current
+        val strokeWidthPx = density.run { strokeWidth.toPx() }
+        val cornerRadiusPx = density.run { cornerRadiusDp.toPx() }
 
-    this.then(Modifier.drawWithCache {
-        onDrawBehind {
-            val stroke = Stroke(
-                width = strokeWidthPx,
-                pathEffect = PathEffect.dashPathEffect(floatArrayOf(15f, 10f), 0f)
-            )
-            drawRoundRect(
-                color = color, style = stroke, cornerRadius = CornerRadius(cornerRadiusPx)
-            )
-        }
-    })
-})
+        this.then(
+            Modifier.drawWithCache {
+                onDrawBehind {
+                    val stroke = Stroke(
+                        width = strokeWidthPx,
+                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(15f, 10f), 0f)
+                    )
+                    drawRoundRect(
+                        color = color, style = stroke, cornerRadius = CornerRadius(cornerRadiusPx)
+                    )
+                }
+            }
+        )
+    }
+)
 
 @Suppress("FunctionName")
 fun Modifier.simple_horizontal_scroll_bar(

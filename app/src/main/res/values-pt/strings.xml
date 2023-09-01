@@ -30,7 +30,7 @@
         Faça seu login
     </string>
     <string name="login_screen.label.button_login">
-        Login
+        Login Anônimo
     </string>
     <string name="login_screen.text.button_forgot_password">
         Esqueci a senha
@@ -161,6 +161,16 @@
     </string>
     <string name="home_screen.label.start_activities">
         Iniciar Atividades
+    </string>
+
+    <string name="home_screen.label.tutorial">
+        Veja como utilizar o aplicativo
+    </string>
+    <string name="home_screen.label.first_activity">
+        Primeira Atividade - Lei de Coulomb
+    </string>
+    <string name="home_screen.label.second_activity">
+        Segunda Atividade - Campos Elétricos
     </string>
 
     <string name="tutorial_activity.label.add_model">

@@ -30,7 +30,7 @@
         Login
     </string>
     <string name="login_screen.label.button_login">
-        Login
+        Anonymous Login
     </string>
     <string name="login_screen.text.button_forgot_password">
         Forgot password
@@ -161,6 +161,16 @@
     </string>
     <string name="home_screen.label.start_activities">
         Start Activities
+    </string>
+
+    <string name="home_screen.label.tutorial">
+        Learn how to use the app
+    </string>
+    <string name="home_screen.label.first_activity">
+        First Activity - Coulombs\' Law
+    </string>
+    <string name="home_screen.label.second_activity">
+        Second Activity - Electric Fields
     </string>
 
     <string name="tutorial_activity.label.add_model">

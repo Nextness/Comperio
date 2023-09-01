@@ -34,23 +34,23 @@ import com.research.comperio.ui.screen_navigation.navigation_bar
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("ComposableNaming")
 fun main_screen(navigation_controller: NavHostController = rememberNavController()) {
-    /* TODO: Remove this ducplicate code and refactor everything for a better alternative */
+    /* TODO: Remove this duplicate code and refactor everything for a better alternative */
     val screens: List<bottom_navigation_item> = listOf(
         bottom_navigation_item(
             screen_name = "Início",
             route = navigation_bar.home,
             icon = Icons.Rounded.Home
         ),
-        bottom_navigation_item(
-            screen_name = "Notificações",
-            route = navigation_bar.notification,
-            icon = Icons.Rounded.Notifications
-        ),
-        bottom_navigation_item(
-            screen_name = "Conta",
-            route = navigation_bar.account_info,
-            icon = Icons.Rounded.AccountCircle
-        )
+        // bottom_navigation_item(
+        //     screen_name = "Notificações",
+        //     route = navigation_bar.notification,
+        //     icon = Icons.Rounded.Notifications
+        // ),
+        // bottom_navigation_item(
+        //     screen_name = "Conta",
+        //     route = navigation_bar.account_info,
+        //     icon = Icons.Rounded.AccountCircle
+        // )
     )
     val navigation_back_stack_entry by navigation_controller.currentBackStackEntryAsState()
     val current_destination = navigation_back_stack_entry?.destination
@@ -58,27 +58,27 @@ fun main_screen(navigation_controller: NavHostController = rememberNavController
 
     Scaffold(
         modifier = Modifier.background(Color(0xFFF2F3F7)),
-        topBar = {
-            if (bottom_bar_destination) {
-                TopAppBar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(60.dp)
-                        .padding(bottom = 11.dp),
-                    elevation = 6.dp,
-                    backgroundColor = Color(0xFFFFFFFF),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .padding(start = 14.dp)
-                            .size(32.dp),
-                        painter = painterResource(id = R.drawable.comperio_logo_official),
-                        contentDescription = "Something"
-                    )
-                }
-            }
-        },
+        // topBar = {
+        //     if (bottom_bar_destination) {
+        //         TopAppBar(
+        //             modifier = Modifier
+        //                 .fillMaxWidth()
+        //                 .height(60.dp)
+        //                 .padding(bottom = 11.dp),
+        //             elevation = 6.dp,
+        //             backgroundColor = Color(0xFFFFFFFF),
+        //             contentPadding = PaddingValues(0.dp)
+        //         ) {
+        //             Image(
+        //                 modifier = Modifier
+        //                     .padding(start = 14.dp)
+        //                     .size(32.dp),
+        //                 painter = painterResource(id = R.drawable.comperio_logo_official),
+        //                 contentDescription = "Something"
+        //             )
+        //         }
+        //     }
+        // },
         bottomBar = { bottom_navigation_bar(navigation_controller = navigation_controller) }
     ) { padding ->
         home_navigation_graph(

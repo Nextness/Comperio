@@ -102,11 +102,11 @@ fun landing_screen(navigation_controller: NavController) {
             }
         )
 
-        create_new_account_text(
-            on_click_text = {
-                navigation_controller.navigate(graph_route.account_creation)
-            }
-        )
+        // create_new_account_text(
+        //     on_click_text = {
+        //         navigation_controller.navigate(graph_route.account_creation)
+        //     }
+        // )
     }
 }
 

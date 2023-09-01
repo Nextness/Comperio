@@ -42,16 +42,16 @@ fun bottom_navigation_bar(
             route = navigation_bar.home,
             icon = Icons.Rounded.Home
         ),
-        bottom_navigation_item(
-            screen_name = "Notificações",
-            route = navigation_bar.notification,
-            icon = Icons.Rounded.Notifications
-        ),
-        bottom_navigation_item(
-            screen_name = "Conta",
-            route = navigation_bar.account_info,
-            icon = Icons.Rounded.AccountCircle
-        )
+        // bottom_navigation_item(
+        //     screen_name = "Notificações",
+        //     route = navigation_bar.notification,
+        //     icon = Icons.Rounded.Notifications
+        // ),
+        // bottom_navigation_item(
+        //     screen_name = "Conta",
+        //     route = navigation_bar.account_info,
+        //     icon = Icons.Rounded.AccountCircle
+        // )
     )
     val navigation_back_stack_entry by navigation_controller.currentBackStackEntryAsState()
     val current_destination = navigation_back_stack_entry?.destination

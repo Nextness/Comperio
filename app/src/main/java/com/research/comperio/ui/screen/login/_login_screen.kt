@@ -79,6 +79,7 @@ fun login_screen(navigation_controller: NavController) {
 
         Spacer(modifier = Modifier.weight(1f))
 
+        /*
         val text_modifier = Modifier
             .fillMaxWidth()
             .padding(start = 6.dp, end = 6.dp, top = 0.dp, bottom = 4.dp)
@@ -109,6 +110,7 @@ fun login_screen(navigation_controller: NavController) {
         password_input_field()
 
         Spacer(modifier = Modifier.height(70.dp))
+         */
 
         default_button(
             button_label = R.string.login_screen_label_button_login,
@@ -118,7 +120,7 @@ fun login_screen(navigation_controller: NavController) {
                 navigation_controller.navigate(comperio_navigation.BOTTOM_NAV_ROOT_GRAPH.route)
             }
         )
-
+        /*
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(
@@ -129,6 +131,7 @@ fun login_screen(navigation_controller: NavController) {
             color = MaterialTheme.extended_color_scheme.primary_text_color_variation_001,
             textAlign = TextAlign.Center
         )
+        */
     }
 }
 
