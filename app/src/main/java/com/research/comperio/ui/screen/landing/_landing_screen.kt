@@ -34,6 +34,7 @@ import com.research.comperio.ui.common.default_button
 import com.research.comperio.ui.common.header_comperio_logo
 import com.research.comperio.ui.common.set_screen_orientation
 import com.research.comperio.ui.screen.login.create_new_account_text
+import com.research.comperio.ui.screen_navigation.comperio_navigation
 import com.research.comperio.ui.screen_navigation.graph_route
 
 @Composable
@@ -98,7 +99,7 @@ fun landing_screen(navigation_controller: NavController) {
             label_color = MaterialTheme.extended_color_scheme.on_primary_text_color,
             button_color = MaterialTheme.extended_color_scheme.on_background_hero,
             on_click = {
-                navigation_controller.navigate(graph_route.login)
+                navigation_controller.navigate(/*graph_route.login*/comperio_navigation.BOTTOM_NAV_ROOT_GRAPH.route)
             }
         )
 

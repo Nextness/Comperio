@@ -36,4 +36,5 @@ sealed class comperio_navigation(
     object account_info : comperio_navigation("account_info_navigation", "Account Information")
 
     object tutorial_activity : comperio_navigation("tutorial_activity_navigation", "Tutorial Activity")
+    object first_activity : comperio_navigation("first_activity_navigation", "First Activity")
 }

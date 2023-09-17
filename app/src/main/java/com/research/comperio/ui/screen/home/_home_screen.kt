@@ -88,9 +88,7 @@ fun home_screen(navigation_controller: NavController, content_padding: PaddingVa
             .fillMaxSize()
             .background(color = MaterialTheme.extended_color_scheme.primary)
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
@@ -99,19 +97,21 @@ fun home_screen(navigation_controller: NavController, content_padding: PaddingVa
                         startY = 0f,
                         endY = 1000f
                     )
+
                 )
-                .padding(all=32.dp)
         ) {
-            header_comperio_logo()
-            Spacer(modifier = Modifier.height(44.dp))
-            Text(
-                text = "Você já pode começar\n" +
-                        "uma atividade!",
-                color = Color(0xFFFFFFFF),
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Normal,
-                textAlign = TextAlign.Center
-            )
+            Column(modifier = Modifier.padding(all = 32.dp)) {
+                header_comperio_logo()
+                Spacer(modifier = Modifier.height(44.dp))
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Você já pode começar\n" + "uma atividade!",
+                    color = Color(0xFFFFFFFF),
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Center
+                )
+            }
             Spacer(modifier = Modifier.height(44.dp))
         }
         Column(
@@ -121,7 +121,7 @@ fun home_screen(navigation_controller: NavController, content_padding: PaddingVa
                 .fillMaxSize()
                 .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp))
                 .background(Color(0xFFFFFFFF))
-                .padding(all=15.dp)
+                .padding(all = 15.dp)
         ) {
             Spacer(modifier = Modifier.height(30.dp))
             Text(
@@ -144,32 +144,43 @@ fun home_screen(navigation_controller: NavController, content_padding: PaddingVa
                 fontWeight = FontWeight.Normal
             )
             Spacer(modifier = Modifier.height(25.dp))
-            default_button_with_adjustments(
-                button_label = R.string.home_screen_label_tutorial,
-                button_color=MaterialTheme.extended_color_scheme.primary,
+            default_button_with_adjustments(button_label = R.string.home_screen_label_tutorial,
+                button_color = MaterialTheme.extended_color_scheme.primary,
                 label_color = MaterialTheme.extended_color_scheme.on_primary_text_color,
-                modifier = Modifier.fillMaxWidth().height(70.dp).clip(RoundedCornerShape(5.dp)),
-                on_click = {}
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .clip(RoundedCornerShape(5.dp)),
+                on_click = {
+                    navigation_controller.navigate(route = comperio_navigation.tutorial_activity.route)
+                }
             )
             Spacer(modifier = Modifier.height(20.dp))
-            default_button_with_adjustments(
-                button_label = R.string.home_screen_label_first_activity,
-                button_color=MaterialTheme.extended_color_scheme.primary,
+            default_button_with_adjustments(button_label = R.string.home_screen_label_first_activity,
+                button_color = MaterialTheme.extended_color_scheme.primary,
                 label_color = MaterialTheme.extended_color_scheme.on_primary_text_color,
-                modifier = Modifier.fillMaxWidth().height(70.dp).clip(RoundedCornerShape(5.dp)),
-                on_click = {}
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .clip(RoundedCornerShape(5.dp)),
+                on_click = {
+                    navigation_controller.navigate(route = comperio_navigation.first_activity.route)
+                }
             )
             Spacer(modifier = Modifier.height(20.dp))
-            default_button_with_adjustments(
-                button_label = R.string.home_screen_label_second_activity,
-                button_color= comperio_light_background,
+            default_button_with_adjustments(button_label = R.string.home_screen_label_second_activity,
+                button_color = comperio_light_background,
                 label_color = comperio_black_dark,
-                modifier = Modifier.fillMaxWidth().height(70.dp).clip(RoundedCornerShape(5.dp)),
-                on_click = {}
-            )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .clip(RoundedCornerShape(5.dp)),
+                on_click = {})
             Spacer(modifier = Modifier.height(40.dp))
             Text(
-                modifier = Modifier.fillMaxWidth().height(70.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp),
                 text = "Não se preocupe, logo novas atividades serão adicionadas.",
                 color = Color(0xFF101215),
                 style = TextStyle(
@@ -184,13 +195,18 @@ fun home_screen(navigation_controller: NavController, content_padding: PaddingVa
     }
 }
 
+
 @Composable
 @SuppressLint("ComposableNaming")
-fun home_screen_future_implementation(navigation_controller: NavController, content_padding: PaddingValues) {
+fun home_screen_future_implementation(
+    navigation_controller: NavController, content_padding: PaddingValues
+) {
     set_screen_orientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-    Spacer(modifier = Modifier
-        .height(11.dp)
-        .padding(content_padding))
+    Spacer(
+        modifier = Modifier
+            .height(11.dp)
+            .padding(content_padding)
+    )
     Column(
         modifier = Modifier
             .padding(content_padding)
@@ -221,13 +237,11 @@ fun home_screen_future_implementation(navigation_controller: NavController, cont
                 fontWeight = FontWeight.Normal
             )
             Spacer(modifier = Modifier.height(20.dp))
-            default_button_with_adjustments(
-                modifier = Modifier.width(180.dp),
+            default_button_with_adjustments(modifier = Modifier.width(180.dp),
                 button_label = R.string.home_screen_label_start_activities,
                 button_color = Color(0xFFFFFFFF),
                 label_color = Color(0xFF101215),
-                on_click = { navigation_controller.navigate(route = comperio_navigation.tutorial_activity.route) }
-            )
+                on_click = { navigation_controller.navigate(route = comperio_navigation.tutorial_activity.route) })
         }
 
     }
@@ -294,8 +308,7 @@ fun LazyListScope.lazy_row_item_content() {
                 .height(130.dp)
                 .dashed_border(2.dp, Color(0xFFD9DAE1), 6.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFF2F3F7),
-                contentColor = Color(0xFF000000)
+                containerColor = Color(0xFFF2F3F7), contentColor = Color(0xFF000000)
             ),
             content = {
                 Column(modifier = Modifier.fillMaxWidth()) {
@@ -324,72 +337,64 @@ fun LazyListScope.lazy_row_item_content() {
                 }
             },
             contentPadding = PaddingValues(10.dp),
-            onClick = {}
-        )
+            onClick = {})
     }
 }
 
 @Suppress("FunctionName")
-fun Modifier.dashed_border(strokeWidth: Dp, color: Color, cornerRadiusDp: Dp) = composed(
-    factory = {
-        val density = LocalDensity.current
-        val strokeWidthPx = density.run { strokeWidth.toPx() }
-        val cornerRadiusPx = density.run { cornerRadiusDp.toPx() }
+fun Modifier.dashed_border(strokeWidth: Dp, color: Color, cornerRadiusDp: Dp) = composed(factory = {
+    val density = LocalDensity.current
+    val strokeWidthPx = density.run { strokeWidth.toPx() }
+    val cornerRadiusPx = density.run { cornerRadiusDp.toPx() }
 
-        this.then(
-            Modifier.drawWithCache {
-                onDrawBehind {
-                    val stroke = Stroke(
-                        width = strokeWidthPx,
-                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(15f, 10f), 0f)
-                    )
-                    drawRoundRect(
-                        color = color, style = stroke, cornerRadius = CornerRadius(cornerRadiusPx)
-                    )
-                }
-            }
-        )
-    }
-)
+    this.then(Modifier.drawWithCache {
+        onDrawBehind {
+            val stroke = Stroke(
+                width = strokeWidthPx,
+                pathEffect = PathEffect.dashPathEffect(floatArrayOf(15f, 10f), 0f)
+            )
+            drawRoundRect(
+                color = color, style = stroke, cornerRadius = CornerRadius(cornerRadiusPx)
+            )
+        }
+    })
+})
 
 @Suppress("FunctionName")
 fun Modifier.simple_horizontal_scroll_bar(
-    state: LazyListState,
-    height: Dp = 6.dp
-) = composed(
-    factory = {
+    state: LazyListState, height: Dp = 6.dp
+) = composed(factory = {
 
-        val scroll_bar_color by animateColorAsState(
-            targetValue = if (state.isScrollInProgress) Color(0xFFD9DAE1) else Color(0xFFF2F3F7),
-            animationSpec = tween(durationMillis = 300)
-        )
+    val scroll_bar_color by animateColorAsState(
+        targetValue = if (state.isScrollInProgress) Color(0xFFD9DAE1) else Color(0xFFF2F3F7),
+        animationSpec = tween(durationMillis = 300)
+    )
 
-        drawWithContent {
-            drawContent()
+    drawWithContent {
+        drawContent()
 
-            val first_visible_element_index = state.layoutInfo.visibleItemsInfo.firstOrNull()?.index
+        val first_visible_element_index = state.layoutInfo.visibleItemsInfo.firstOrNull()?.index
 
-            if (first_visible_element_index != null) {
-                val element_width = this.size.width / state.layoutInfo.totalItemsCount
-                val scroll_bar_offset_x = first_visible_element_index * element_width
-                val scroll_bar_width = state.layoutInfo.visibleItemsInfo.size * element_width
+        if (first_visible_element_index != null) {
+            val element_width = this.size.width / state.layoutInfo.totalItemsCount
+            val scroll_bar_offset_x = first_visible_element_index * element_width
+            val scroll_bar_width = state.layoutInfo.visibleItemsInfo.size * element_width
 
-                if (this.size.width != scroll_bar_width) {
-                    drawRoundRect(
-                        color = scroll_bar_color,
-                        topLeft = Offset(
-                            x = scroll_bar_offset_x,
-                            y = this.size.height - height.toPx() + 8.dp.toPx()
-                        ),
-                        size = Size(width = scroll_bar_width, height = height.toPx()),
-                        alpha = 1f,
-                        cornerRadius = CornerRadius(6.dp.toPx())
-                    )
-                }
+            if (this.size.width != scroll_bar_width) {
+                drawRoundRect(
+                    color = scroll_bar_color,
+                    topLeft = Offset(
+                        x = scroll_bar_offset_x,
+                        y = this.size.height - height.toPx() + 8.dp.toPx()
+                    ),
+                    size = Size(width = scroll_bar_width, height = height.toPx()),
+                    alpha = 1f,
+                    cornerRadius = CornerRadius(6.dp.toPx())
+                )
             }
         }
     }
-)
+})
 
 @Composable
 @SuppressLint("ComposableNaming")
@@ -397,12 +402,10 @@ fun Modifier.simple_horizontal_scroll_bar(
 fun alert_dialog_add_activity(is_open_dialog: Boolean = false) {
     var open_dialog by remember { mutableStateOf(is_open_dialog) }
     if (open_dialog) {
-        AlertDialog(
-            modifier = Modifier
-                .height(350.dp)
-                .width(300.dp),
-            onDismissRequest = { open_dialog = false }
-        ) {
+        AlertDialog(modifier = Modifier
+            .height(350.dp)
+            .width(300.dp),
+            onDismissRequest = { open_dialog = false }) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -451,12 +454,10 @@ fun alert_dialog_add_activity(is_open_dialog: Boolean = false) {
                     dropdown_content = listOf("Eletromagnetismo")
                 )
                 Spacer(modifier = Modifier.height(28.dp))
-                default_button(
-                    button_label = R.string.home_screen_label_add_activity,
+                default_button(button_label = R.string.home_screen_label_add_activity,
                     button_color = main_color,
                     label_color = Color(0xFFFFFFFF),
-                    on_click = {}
-                )
+                    on_click = {})
             }
         }
     }

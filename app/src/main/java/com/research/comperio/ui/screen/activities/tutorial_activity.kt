@@ -2,6 +2,7 @@ package com.research.comperio.ui.screen.activities
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
@@ -25,13 +26,18 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,51 +48,56 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.research.comperio.R
-import com.research.comperio.ui.common.default_button
-import com.research.comperio.ui.common.on_back_handler_do_nothing
-import com.research.comperio.ui.common.set_screen_orientation
+import com.research.comperio.theme.extended_color_scheme
 import com.research.comperio.theme.main_color
-import com.research.comperio.view_model.init_3d_model_view_model
-import io.github.sceneview.ar.ARScene
+import com.research.comperio.theme.satoshi_font_family
+import com.research.comperio.ui.common.default_button
+import com.research.comperio.ui.common.dialog_box
+import com.research.comperio.ui.common.set_screen_orientation
 
 @Composable
 @SuppressLint("ComposableNaming")
 fun tutorial_activity(navigation_controller: NavController) {
-    val init_3d_model_view_model = viewModel<init_3d_model_view_model>()
-    init_3d_model_view_model.set_3d_model_location("models/sports_car.glb")
-    init_3d_model_view_model.load_3d_model()
-
+    var open_alert_dialog = remember {
+        mutableStateOf(false)
+    }
     Box(modifier = Modifier.fillMaxWidth()) {
-        /* TODO: Improve back handler with pop asking if user want to go back */
-        on_back_handler_do_nothing()
+        BackHandler(enabled = true, onBack = {
+            open_alert_dialog.value = true
+        })
+        dialog_box(open_alert_dialog, navigation_controller)
+        Box(modifier = Modifier.fillMaxSize())
         set_screen_orientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-        ARScene(
-            modifier = Modifier.fillMaxSize(),
-            nodes = init_3d_model_view_model.ar_nodes.collectAsState().value,
-            planeRenderer = false,
-            onCreate = { init_3d_model_view_model.show_3d_model() }
-        )
+        //ARScene(
+        //    modifier = Modifier.fillMaxSize(),
+        //    nodes = init_3d_model_view_model.ar_nodes.collectAsState().value,
+        //    planeRenderer = false,
+        //    onCreate = { init_3d_model_view_model.show_3d_model() }
+        //)
         tutorial_activity_overlay(
             navigation_controller = navigation_controller,
-            init_3d_model_view_model = init_3d_model_view_model
+            open_alert_dialog = open_alert_dialog
+            // init_3d_model_view_model = init_3d_model_view_model
         )
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @SuppressLint("ComposableNaming")
 private fun BoxScope.tutorial_activity_overlay(
     navigation_controller: NavController,
-    init_3d_model_view_model: init_3d_model_view_model
+    open_alert_dialog: MutableState<Boolean>
+    // init_3d_model_view_model: init_3d_model_view_model
 ) {
     Box(modifier = Modifier.matchParentSize()) {
         Column(
@@ -94,6 +105,7 @@ private fun BoxScope.tutorial_activity_overlay(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
+            dialog_box(open_alert_dialog, navigation_controller)
             Row(modifier = Modifier.fillMaxWidth()) {
                 IconButton(
                     modifier = Modifier
@@ -117,7 +129,7 @@ private fun BoxScope.tutorial_activity_overlay(
                         .clip(shape = RoundedCornerShape(6.dp))
                         .background(Color(0x55000000)),
                     onClick = {
-
+                        open_alert_dialog.value = true
                     },
                 ) {
                     Icon(
@@ -136,14 +148,18 @@ private fun BoxScope.tutorial_activity_overlay(
             var show_button: Boolean by remember { mutableStateOf(true) }
             val button_content_alpha by animateFloatAsState(
                 if (show_button) 1f else 0f,
-                animationSpec = tween(durationMillis = animation_duration)
+                animationSpec = tween(durationMillis = animation_duration),
+                label = ""
             )
             val button_color_alpha by animateColorAsState(
                 if (show_button) Color(0x55000000) else Color(0x00000000),
-                animationSpec = tween(durationMillis = animation_duration)
+                animationSpec = tween(durationMillis = animation_duration),
+                label = ""
             )
             val off_set by animateIntAsState(
-                if (show_button) 0 else 60, animationSpec = tween(durationMillis = off_set_duration)
+                if (show_button) 0 else 60,
+                animationSpec = tween(durationMillis = off_set_duration),
+                label = ""
             )
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -191,13 +207,10 @@ private fun BoxScope.tutorial_activity_overlay(
                         .height(54.dp)
                         .background(Color(0xFFFFFFFF))
                         .padding(8.dp),
-                    value = init_3d_model_view_model.y.collectAsState().value,
+                    value = 0f,
                     valueRange = 0f..1f,
                     interactionSource = interaction_source2,
-                    onValueChange = {
-                        init_3d_model_view_model.update_y(it)
-                        init_3d_model_view_model.model_3d_node.value.position.y = it
-                    },
+                    onValueChange = { },
                     thumb = {
                         SliderDefaults.Thumb( //androidx.compose.material3.SliderDefaults
                             modifier = Modifier.padding(2.5.dp),
@@ -207,8 +220,7 @@ private fun BoxScope.tutorial_activity_overlay(
                         )
                     },
                     colors = SliderDefaults.colors(
-                        activeTrackColor = Color(0xFF8E79F4),
-                        inactiveTrackColor = Color(0xFFD9DAE1)
+                        activeTrackColor = Color(0xFF8E79F4), inactiveTrackColor = Color(0xFFD9DAE1)
                     ),
                 )
                 Slider(
@@ -220,10 +232,7 @@ private fun BoxScope.tutorial_activity_overlay(
                     value = slider_value,
                     valueRange = -0.99f..0.99f,
                     interactionSource = interaction_source,
-                    onValueChange = {
-                        slider_value = it
-                        init_3d_model_view_model.model_3d_node.value.position.x = it
-                    },
+                    onValueChange = { },
                     thumb = {
                         SliderDefaults.Thumb( //androidx.compose.material3.SliderDefaults
                             modifier = Modifier.padding(2.5.dp),
@@ -233,8 +242,7 @@ private fun BoxScope.tutorial_activity_overlay(
                         )
                     },
                     colors = SliderDefaults.colors(
-                        activeTrackColor = Color(0xFF8E79F4),
-                        inactiveTrackColor = Color(0xFFD9DAE1)
+                        activeTrackColor = Color(0xFF8E79F4), inactiveTrackColor = Color(0xFFD9DAE1)
                     ),
                 )
                 default_button(button_enabled = show_button,
@@ -242,11 +250,11 @@ private fun BoxScope.tutorial_activity_overlay(
                     label_color = Color(0xFFFFFFFF),
                     button_color = main_color,
                     on_click = {
-                        if (!init_3d_model_view_model.model_3d_node.value.isAnchored) {
-                            init_3d_model_view_model.model_3d_node.value.anchor()
-                        } else {
-                            init_3d_model_view_model.model_3d_node.value.detachAnchor()
-                        }
+                        // if (!init_3d_model_view_model.model_3d_node.value.isAnchored) {
+                        //     init_3d_model_view_model.model_3d_node.value.anchor()
+                        // } else {
+                        //     init_3d_model_view_model.model_3d_node.value.detachAnchor()
+                        // }
                     })
             }
         }
@@ -258,4 +266,12 @@ private fun BoxScope.tutorial_activity_overlay(
 @Preview(showBackground = true, device = "id:pixel_5", locale = "pt")
 fun preview_tutorial_activity() {
     tutorial_activity(navigation_controller = rememberNavController())
+}
+
+@Composable
+@SuppressLint("ComposableNaming")
+@Preview(showBackground = true, device = "id:pixel_5", locale = "pt")
+fun preview_dialog_box() {
+    val show_dialog = remember { mutableStateOf(true) }
+    dialog_box(show_dialog, rememberNavController())
 }

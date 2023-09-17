@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
+import com.research.comperio.ui.screen.activities.first_activity
 import com.research.comperio.ui.screen.activities.tutorial_activity
 import com.research.comperio.ui.screen.home.account_info_screen
 import com.research.comperio.ui.screen.home.home_screen
@@ -71,6 +72,9 @@ fun home_navigation_graph(
         }
         composable(route = comperio_navigation.tutorial_activity.route) {
             tutorial_activity(navigation_controller = navigation_controller)
+        }
+        composable(route = comperio_navigation.first_activity.route) {
+            first_activity(navigation_controller = navigation_controller)
         }
     }
 }
