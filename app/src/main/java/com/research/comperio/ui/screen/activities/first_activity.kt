@@ -92,7 +92,7 @@ fun ar_node_load(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun BoxScope.ui_elements(
+fun BoxScope.first_activity_ui_elements(
     back_handler_dialog_box: MutableState<Boolean>,
     force: MutableState<Float>,
     scale: MutableState<Float>,
@@ -355,7 +355,13 @@ fun first_activity(navigation_controller: NavController) {
             }
         )
 
-        ui_elements(back_handler_dialog_box, force, scale, are_nodes_anchored, ar_nodes)
+        first_activity_ui_elements(
+            back_handler_dialog_box,
+            force,
+            scale,
+            are_nodes_anchored,
+            ar_nodes
+        )
     }
 }
 
