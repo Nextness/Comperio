@@ -30,14 +30,12 @@ fun default_button(
     @StringRes button_label: Int,
     label_color: Color,
     button_color: Color,
+    modifier: Modifier = Modifier.fillMaxWidth().height(component_height.dp).background(color = transparent),
     on_click: () -> Unit,
 ) {
     Button(
         enabled = button_enabled,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(component_height.dp)
-            .background(color = transparent),
+        modifier = modifier,
         shape = comperio_component_corner_radius,
         colors = ButtonDefaults.buttonColors(
             containerColor = button_color,

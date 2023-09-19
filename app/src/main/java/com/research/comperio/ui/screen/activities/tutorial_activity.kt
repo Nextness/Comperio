@@ -21,27 +21,34 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -49,13 +56,19 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.ar.core.TrackingFailureReason
 import com.research.comperio.R
+import com.research.comperio.common.format
 import com.research.comperio.theme.main_color
+import com.research.comperio.theme.transparent
+import com.research.comperio.ui.common.component_height
 import com.research.comperio.ui.common.default_button
 import com.research.comperio.ui.common.dialog_box
 import com.research.comperio.ui.common.set_screen_orientation
+import dev.romainguy.kotlin.math.Float3
 import io.github.sceneview.ar.ARScene
 import io.github.sceneview.ar.node.ArModelNode
 import io.github.sceneview.math.Position
+import kotlin.math.floor
+import kotlin.math.round
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,7 +81,6 @@ fun BoxScope.tutorial_activity_ui_elements(
     ar_nodes: MutableList<ArModelNode>
 ) {
     val slider_value = remember { mutableStateOf(0f) }
-    val slider_value2 = remember { mutableStateOf(0f) }
     val interaction_source = remember { MutableInteractionSource() }
     val interaction_source2 = remember { MutableInteractionSource() }
     val animation_duration = 400
@@ -85,7 +97,7 @@ fun BoxScope.tutorial_activity_ui_elements(
         label = ""
     )
     val off_set = animateIntAsState(
-        if (show_button.value) 0 else 60,
+        if (show_button.value) 0 else 200,
         animationSpec = tween(durationMillis = off_set_duration),
         label = ""
     )
@@ -167,18 +179,39 @@ fun BoxScope.tutorial_activity_ui_elements(
                     .background(button_color_alpha.value)
                     .padding(16.dp)
                     .alpha(button_content_alpha.value),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy((-1).dp)
             ) {
+                Box(
+                    modifier = Modifier
+                        .height(25.dp)
+                        .clip(RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp))
+                        .background(Color(0xFFFFFFFF)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        text = "Rotação do Modelo: ${ slider_value.value.format(2)}°",
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
                 Slider(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(6.dp))
+                        .clip(RoundedCornerShape(bottomStart = 6.dp, bottomEnd = 6.dp))
                         .height(54.dp)
                         .background(Color(0xFFFFFFFF))
                         .padding(8.dp),
-                    value = 0f,
-                    valueRange = 0f..1f,
+                    value = slider_value.value,
+                    valueRange = 0f..360f,
                     interactionSource = interaction_source2,
-                    onValueChange = { },
+                    onValueChange = {
+                        ar_nodes.forEach { node ->
+                            node.rotation = Float3(0f, slider_value.value, 0f)
+                        }
+                        slider_value.value = it
+                    },
                     thumb = {
                         SliderDefaults.Thumb( //androidx.compose.material3.SliderDefaults
                             modifier = Modifier.padding(2.5.dp),
@@ -188,19 +221,39 @@ fun BoxScope.tutorial_activity_ui_elements(
                         )
                     },
                     colors = SliderDefaults.colors(
-                        activeTrackColor = Color(0xFF8E79F4), inactiveTrackColor = Color(0xFFD9DAE1)
+                        activeTrackColor = Color(0xFF8E79F4),
+                        inactiveTrackColor = Color(0xFFD9DAE1)
                     ),
                 )
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier
+                        .height(25.dp)
+                        .clip(RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp))
+                        .background(Color(0xFFFFFFFF)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        text = "Escala do Modelo: ${ scale.value.format(2) }",
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
                 Slider(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(6.dp))
+                        .clip(RoundedCornerShape(bottomStart = 6.dp, bottomEnd = 6.dp))
                         .height(54.dp)
                         .background(Color(0xFFFFFFFF))
                         .padding(8.dp),
-                    value = slider_value.value,
-                    valueRange = -0.99f..0.99f,
+                    value = scale.value,
+                    valueRange = 0.05f..0.2f,
                     interactionSource = interaction_source,
-                    onValueChange = { },
+                    onValueChange = {
+                        scale.value = it
+                    },
                     thumb = {
                         SliderDefaults.Thumb( //androidx.compose.material3.SliderDefaults
                             modifier = Modifier.padding(2.5.dp),
@@ -213,27 +266,59 @@ fun BoxScope.tutorial_activity_ui_elements(
                         activeTrackColor = Color(0xFF8E79F4), inactiveTrackColor = Color(0xFFD9DAE1)
                     ),
                 )
-                default_button(
-                    button_enabled = show_button.value,
-                    button_label = R.string.tutorial_activity_label_add_model,
-                    label_color = Color(0xFFFFFFFF),
-                    button_color = main_color,
-                    on_click = {
-                        if (!is_node_anchored.value) {
-                            for (node in ar_nodes) {
-                                node.anchor()
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    default_button(
+                        button_enabled = show_button.value,
+                        button_label = R.string.tutorial_activity_label_add_model,
+                        label_color = Color(0xFFFFFFFF),
+                        button_color = main_color,
+                        modifier = Modifier
+                            .fillMaxWidth(0.82f)
+                            .height(component_height.dp)
+                            .background(color = transparent),
+                        on_click = {
+                            if (!is_node_anchored.value) {
+                                for (node in ar_nodes) {
+                                    node.anchor()
+                                }
+                                is_node_anchored.value = !is_node_anchored.value
+                            } else {
+                                for (node in ar_nodes) {
+                                    node.detachAnchor()
+                                }
+                                is_node_anchored.value = !is_node_anchored.value
                             }
-                            is_node_anchored.value = !is_node_anchored.value
-                        } else {
-                            for (node in ar_nodes) {
-                                node.detachAnchor()
-                            }
-                            is_node_anchored.value = !is_node_anchored.value
                         }
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(
+                        modifier = Modifier
+                            .width(component_height.dp)
+                            .height(component_height.dp)
+                            .clip(shape = RoundedCornerShape(6.dp))
+                            .background(main_color),
+                        onClick = {
+                            ar_nodes.forEach { node ->
+                                node.detachAnchor()
+                                node.scale = Float3(1f, 1f, 1f)
+                                node.rotation = Float3(0f, 0f, 0f)
+                                scale.value = 0.05f
+                                slider_value.value = 0f
+                            }
+                        },
+                    ) {
+                        Icon(
+                            painter = rememberVectorPainter(Icons.Rounded.RestartAlt),
+                            contentDescription = stringResource(
+                                id = R.string.comperio_logo_header_content_description_arrow_back
+                            ),
+                            modifier = Modifier,
+                            tint = Color(0xFFFFFFFF),
+                        )
                     }
-                )
+                }
             }
-
         }
     }
 }
