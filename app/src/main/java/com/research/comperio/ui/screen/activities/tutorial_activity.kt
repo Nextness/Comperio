@@ -2,11 +2,24 @@
 
 package com.research.comperio.ui.screen.activities
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
+import android.util.Log
+import android.view.View
+import android.view.Window
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.Animatable
+import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Easing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,12 +29,14 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -32,32 +47,48 @@ import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.RestartAlt
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.DialogWindowProvider
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.ar.core.TrackingFailureReason
 import com.research.comperio.R
 import com.research.comperio.common.format
+import com.research.comperio.theme.extended_color_scheme
 import com.research.comperio.theme.main_color
+import com.research.comperio.theme.satoshi_font_family
 import com.research.comperio.theme.transparent
 import com.research.comperio.ui.common.component_height
 import com.research.comperio.ui.common.default_button
@@ -67,12 +98,46 @@ import dev.romainguy.kotlin.math.Float3
 import io.github.sceneview.ar.ARScene
 import io.github.sceneview.ar.node.ArModelNode
 import io.github.sceneview.math.Position
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.floor
 import kotlin.math.round
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun set_dim_level_none(disable_dim: MutableState<Boolean>) {
+    val curView = LocalView.current
+    /* Change the transparency of the dialog window */
+    LaunchedEffect(curView) {
+        tailrec fun Context.findWindow(): Window? = when (this) {
+            is Activity -> window
+            is ContextWrapper -> baseContext.findWindow()
+            else -> null
+        }
+
+        fun View.findWindow(): Window? =
+            (parent as? DialogWindowProvider)?.window ?: context.findWindow()
+
+        try {
+            val window = curView.findWindow() ?: return@LaunchedEffect
+            val lp = window.attributes
+            val default_dim_level = lp.dimAmount
+
+            if (disable_dim.value)
+                lp.dimAmount = 0f
+            else
+                lp.dimAmount = default_dim_level
+
+            window.attributes = lp
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
+}
+
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun BoxScope.tutorial_activity_ui_elements(
     back_handler_dialog_box: MutableState<Boolean>,
     navigation_controller: NavController,
@@ -102,6 +167,301 @@ fun BoxScope.tutorial_activity_ui_elements(
         label = ""
     )
 
+    val skip_tutorial = remember { mutableStateOf(false) }
+    val tutorial_1 = remember { mutableStateOf(false) }
+    val tutorial_1_completed = remember { mutableStateOf(false) }
+    val tutorial_2 = remember { mutableStateOf(false) }
+    val tutorial_2_completed = remember { mutableStateOf(false) }
+    val tutorial_3 = remember { mutableStateOf(false) }
+    val tutorial_3_completed = remember { mutableStateOf(false) }
+    val tutorial_dialog_1 = remember { mutableStateOf(false) }
+    val tutorial_dialog_2 = remember { mutableStateOf(false) }
+    val tutorial_dialog_3 = remember { mutableStateOf(false) }
+    val tutorial_dialog_4 = remember { mutableStateOf(false) }
+
+    val disable_dim_tutorial = remember { mutableStateOf(false) }
+
+    val tutorial_color_highlight = rememberInfiniteTransition(label = "").animateColor(
+        initialValue = Color(0x55000000),
+        targetValue = Color(0xFF391E98),
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = ""
+    )
+    val tutorial_color_highlight_contrast = rememberInfiniteTransition(label = "").animateColor(
+        initialValue = Color(0xFFFFFFFF),
+        targetValue = Color(0xFF000000),
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = ""
+    )
+
+    LaunchedEffect(Unit) {
+        delay(2000)
+        tutorial_dialog_1.value = true
+    }
+
+    if (tutorial_dialog_1.value && !skip_tutorial.value) {
+        AlertDialog(
+            title = {
+                Text(
+                    "Tutorial",
+                    color = main_color,
+                    style = TextStyle(
+                        fontFamily = satoshi_font_family,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 14.sp
+                    )
+                )
+            },
+            text = {
+                Text(
+                    "Este tutorial contêm informações de como utilizar o aplicativo durante as atividades em sala de aula.",
+                    style = TextStyle(
+                        fontFamily = satoshi_font_family,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 18.sp
+                    )
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color(0xFF272727),
+                        containerColor = Color(0xFFFFFFFF)
+                    ),
+                    onClick = {
+                        tutorial_dialog_1.value = false
+                        tutorial_1_completed.value = true
+                    }
+                ) {
+                    androidx.compose.material3.Text(text = "Continuar")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color(0xFF272727),
+                        containerColor = Color(0xFFFFFFFF)
+                    ),
+                    onClick = { skip_tutorial.value = true }
+                ) {
+                    androidx.compose.material3.Text(text = "Pular tutorial")
+                }
+            },
+            onDismissRequest = {},
+            shape = RoundedCornerShape(6.dp),
+            containerColor = Color(0xFFFFFFFF),
+            titleContentColor = MaterialTheme.extended_color_scheme.primary,
+            textContentColor = Color(0xFF272727)
+        )
+    }
+
+    if (tutorial_1_completed.value && !skip_tutorial.value) {
+        LaunchedEffect(Unit) {
+            delay(1000)
+            tutorial_dialog_2.value = true
+        }
+    }
+
+    if (tutorial_dialog_2.value && !skip_tutorial.value) {
+        AlertDialog(
+            title = {
+                disable_dim_tutorial.value = true
+                set_dim_level_none(disable_dim_tutorial)
+                tutorial_1.value = true
+                Text(
+                    "Tutorial",
+                    color = main_color,
+                    style = TextStyle(
+                        fontFamily = satoshi_font_family,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 14.sp
+                    )
+                )
+            },
+            text = {
+                Text(
+                    "Você pode sair da atividade a qualquer momento, utilizando o icone no canto superior esquerdo.",
+                    style = TextStyle(
+                        fontFamily = satoshi_font_family,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 18.sp
+                    )
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color(0xFF272727),
+                        containerColor = Color(0xFFFFFFFF)
+                    ),
+                    onClick = {
+                        tutorial_dialog_2.value = false
+                        tutorial_1.value = false
+                        tutorial_2_completed.value = true
+                    }
+                ) {
+                    androidx.compose.material3.Text(text = "Continuar")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color(0xFF272727),
+                        containerColor = Color(0xFFFFFFFF)
+                    ),
+                    onClick = { skip_tutorial.value = true }
+                ) {
+                    androidx.compose.material3.Text(text = "Pular tutorial")
+                }
+            },
+            onDismissRequest = {},
+            shape = RoundedCornerShape(6.dp),
+            containerColor = Color(0xFFFFFFFF),
+            titleContentColor = MaterialTheme.extended_color_scheme.primary,
+            textContentColor = Color(0xFF272727)
+        )
+    }
+
+    if (tutorial_2_completed.value && !skip_tutorial.value) {
+        LaunchedEffect(Unit) {
+            delay(1000)
+            tutorial_dialog_3.value = true
+        }
+    }
+
+    if (tutorial_dialog_3.value && !skip_tutorial.value) {
+        AlertDialog(
+            title = {
+                disable_dim_tutorial.value = true
+                set_dim_level_none(disable_dim_tutorial)
+                tutorial_2.value = true
+                Text(
+                    "Tutorial",
+                    color = main_color,
+                    style = TextStyle(
+                        fontFamily = satoshi_font_family,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 14.sp
+                    )
+                )
+            },
+            text = {
+                Text(
+                    "Você também pode pausar a qualquer momento, utilizando o icone no canto superior direito.",
+                    style = TextStyle(
+                        fontFamily = satoshi_font_family,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 18.sp
+                    )
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color(0xFF272727),
+                        containerColor = Color(0xFFFFFFFF)
+                    ),
+                    onClick = {
+                        tutorial_2.value = false
+                        tutorial_dialog_3.value = false
+                        tutorial_3_completed.value = true
+                    }
+                ) {
+                    androidx.compose.material3.Text(text = "Continuar")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color(0xFF272727),
+                        containerColor = Color(0xFFFFFFFF)
+                    ),
+                    onClick = { skip_tutorial.value = true }
+                ) {
+                    androidx.compose.material3.Text(text = "Pular tutorial")
+                }
+            },
+            onDismissRequest = {},
+            shape = RoundedCornerShape(6.dp),
+            containerColor = Color(0xFFFFFFFF),
+            titleContentColor = MaterialTheme.extended_color_scheme.primary,
+            textContentColor = Color(0xFF272727)
+        )
+    }
+
+    if (tutorial_3_completed.value && !skip_tutorial.value) {
+        LaunchedEffect(Unit) {
+            delay(1000)
+            tutorial_dialog_4.value = true
+        }
+    }
+
+    if (tutorial_dialog_4.value && !skip_tutorial.value) {
+        AlertDialog(
+            title = {
+                disable_dim_tutorial.value = true
+                set_dim_level_none(disable_dim_tutorial)
+                tutorial_3.value = true
+                Text(
+                    "Tutorial",
+                    color = main_color,
+                    style = TextStyle(
+                        fontFamily = satoshi_font_family,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 14.sp
+                    )
+                )
+            },
+            text = {
+                Text(
+                    "Finalmente, você pode interagir com o modelo 3D utilizando os comandos abaixo.",
+                    style = TextStyle(
+                        fontFamily = satoshi_font_family,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 18.sp
+                    )
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color(0xFF272727),
+                        containerColor = Color(0xFFFFFFFF)
+                    ),
+                    onClick = {
+                        tutorial_3.value = false
+                        tutorial_dialog_4.value = false
+                    }
+                ) {
+                    androidx.compose.material3.Text(text = "Continuar")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color(0xFF272727),
+                        containerColor = Color(0xFFFFFFFF)
+                    ),
+                    onClick = { skip_tutorial.value = true }
+                ) {
+                    androidx.compose.material3.Text(text = "Pular tutorial")
+                }
+            },
+            onDismissRequest = {},
+            shape = RoundedCornerShape(6.dp),
+            containerColor = Color(0xFFFFFFFF),
+            titleContentColor = MaterialTheme.extended_color_scheme.primary,
+            textContentColor = Color(0xFF272727)
+        )
+    }
+
+
     Box(modifier = Modifier.matchParentSize()) {
         Column(
             modifier = Modifier
@@ -114,7 +474,12 @@ fun BoxScope.tutorial_activity_ui_elements(
                 IconButton(
                     modifier = Modifier
                         .clip(shape = RoundedCornerShape(6.dp))
-                        .background(Color(0x55000000)),
+                        .background(
+                            if (tutorial_1.value)
+                                tutorial_color_highlight.value
+                            else
+                                Color(0x55000000)
+                        ),
                     onClick = {
                         back_handler_dialog_box.value = true
                     },
@@ -124,14 +489,22 @@ fun BoxScope.tutorial_activity_ui_elements(
                         contentDescription = stringResource(
                             id = R.string.comperio_logo_header_content_description_arrow_back
                         ),
-                        tint = Color(0xFFFFFFFF),
+                        tint = if (tutorial_1.value)
+                            tutorial_color_highlight_contrast.value
+                        else
+                            Color(0xFFFFFFFF),
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(
                     modifier = Modifier
                         .clip(shape = RoundedCornerShape(6.dp))
-                        .background(Color(0x55000000)),
+                        .background(
+                            if (tutorial_2.value)
+                                tutorial_color_highlight.value
+                            else
+                                Color(0x55000000)
+                        ),
                     onClick = {
                         back_handler_dialog_box.value = true
                     },
@@ -142,11 +515,16 @@ fun BoxScope.tutorial_activity_ui_elements(
                             id = R.string.comperio_logo_header_content_description_arrow_back
                         ),
                         modifier = Modifier,
-                        tint = Color(0xFFFFFFFF),
+                        tint = if (tutorial_2.value)
+                            tutorial_color_highlight_contrast.value
+                        else
+                            Color(0xFFFFFFFF),
                     )
                 }
             }
+
             Spacer(modifier = Modifier.weight(1f))
+
             Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
@@ -157,7 +535,12 @@ fun BoxScope.tutorial_activity_ui_elements(
                 IconButton(
                     modifier = Modifier
                         .clip(shape = RoundedCornerShape(32.dp))
-                        .background(Color(0x55000000)),
+                        .background(
+                            if (tutorial_3.value)
+                                tutorial_color_highlight.value
+                            else
+                                Color(0x55000000)
+                        ),
                     onClick = {
                         show_button.value = !show_button.value
                     },
@@ -168,7 +551,10 @@ fun BoxScope.tutorial_activity_ui_elements(
                         ),
                         contentDescription = null,
                         modifier = Modifier,
-                        tint = Color(0xFFFFFFFF),
+                        tint = if (tutorial_3.value)
+                            tutorial_color_highlight_contrast.value
+                        else
+                            Color(0xFFFFFFFF),
                     )
                 }
             }
@@ -176,7 +562,12 @@ fun BoxScope.tutorial_activity_ui_elements(
                 modifier = Modifier
                     .offset(y = off_set.value.dp)
                     .clip(RoundedCornerShape(6.dp))
-                    .background(button_color_alpha.value)
+                    .background(
+                        if (tutorial_3.value)
+                            tutorial_color_highlight.value
+                        else
+                            button_color_alpha.value
+                    )
                     .padding(16.dp)
                     .alpha(button_content_alpha.value),
                 verticalArrangement = Arrangement.spacedBy((-1).dp)
@@ -191,7 +582,7 @@ fun BoxScope.tutorial_activity_ui_elements(
                     Text(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        text = "Rotação do Modelo: ${ slider_value.value.format(2)}°",
+                        text = "Rotação do Modelo: ${slider_value.value.format(2)}°",
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.bodyMedium
@@ -236,7 +627,7 @@ fun BoxScope.tutorial_activity_ui_elements(
                     Text(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        text = "Escala do Modelo: ${ scale.value.format(2) }",
+                        text = "Escala do Modelo: ${scale.value.format(2)}",
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.bodyMedium
@@ -249,7 +640,7 @@ fun BoxScope.tutorial_activity_ui_elements(
                         .background(Color(0xFFFFFFFF))
                         .padding(8.dp),
                     value = scale.value,
-                    valueRange = 0.05f..0.2f,
+                    valueRange = 0.05f..0.5f,
                     interactionSource = interaction_source,
                     onValueChange = {
                         scale.value = it
@@ -267,7 +658,7 @@ fun BoxScope.tutorial_activity_ui_elements(
                     ),
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Row(modifier = Modifier.fillMaxWidth()) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
                     default_button(
                         button_enabled = show_button.value,
                         button_label = R.string.tutorial_activity_label_add_model,
@@ -305,6 +696,7 @@ fun BoxScope.tutorial_activity_ui_elements(
                                 node.rotation = Float3(0f, 0f, 0f)
                                 scale.value = 0.05f
                                 slider_value.value = 0f
+                                is_node_anchored.value = !is_node_anchored.value
                             }
                         },
                     ) {
@@ -339,9 +731,8 @@ fun tutorial_activity(navigation_controller: NavController) {
         Position(x = 0f, y = 0f, z = 0f)
     )
     ar_nodes.add(car_node.value)
-
+    set_screen_orientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     Box(modifier = Modifier.fillMaxWidth()) {
-        set_screen_orientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         BackHandler { back_handler_dialog_box.value = true }
 
         ARScene(

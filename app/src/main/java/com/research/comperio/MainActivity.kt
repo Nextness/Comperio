@@ -19,8 +19,7 @@ class MainActivity : ComponentActivity() {
             system_ui_controller.isStatusBarVisible = false
 
             WindowCompat.getInsetsController(window, window.decorView).apply {
-                if (system_ui_controller.isStatusBarVisible) systemBarsBehavior =
-                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
 
             ComperioTheme {

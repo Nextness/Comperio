@@ -1,6 +1,7 @@
 package com.research.comperio.ui.screen.splash
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -22,12 +23,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.alpha
 import androidx.navigation.NavController
 import com.research.comperio.R
+import com.research.comperio.ui.common.set_screen_orientation
 import com.research.comperio.ui.screen_navigation.graph_route
 import kotlinx.coroutines.delay
 
 @Composable
 @SuppressLint("ComposableNaming")
 fun animated_splash(navigation_controller: NavController) {
+    set_screen_orientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     var start_animation: Boolean by remember {
         mutableStateOf(false)
     }
