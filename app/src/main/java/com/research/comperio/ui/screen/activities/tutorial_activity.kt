@@ -6,14 +6,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
-import android.util.Log
 import android.view.View
 import android.view.Window
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.Animatable
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloatAsState
@@ -29,14 +26,12 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -59,14 +54,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -76,11 +69,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.ar.core.TrackingFailureReason
@@ -98,11 +87,7 @@ import dev.romainguy.kotlin.math.Float3
 import io.github.sceneview.ar.ARScene
 import io.github.sceneview.ar.node.ArModelNode
 import io.github.sceneview.math.Position
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.math.floor
-import kotlin.math.round
 
 @Composable
 fun set_dim_level_none(disable_dim: MutableState<Boolean>) {
@@ -138,7 +123,7 @@ fun set_dim_level_none(disable_dim: MutableState<Boolean>) {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun BoxScope.tutorial_activity_ui_elements(
+private fun BoxScope.tutorial_activity_ui_elements(
     back_handler_dialog_box: MutableState<Boolean>,
     navigation_controller: NavController,
     scale: MutableState<Float>,
@@ -661,7 +646,7 @@ fun BoxScope.tutorial_activity_ui_elements(
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
                     default_button(
                         button_enabled = show_button.value,
-                        button_label = R.string.tutorial_activity_label_add_model,
+                        button_label = if (!is_node_anchored.value) R.string.tutorial_activity_label_add_model else R.string.tutorial_activity_label_unfix_model,
                         label_color = Color(0xFFFFFFFF),
                         button_color = main_color,
                         modifier = Modifier
@@ -696,8 +681,8 @@ fun BoxScope.tutorial_activity_ui_elements(
                                 node.rotation = Float3(0f, 0f, 0f)
                                 scale.value = 0.05f
                                 slider_value.value = 0f
-                                is_node_anchored.value = !is_node_anchored.value
                             }
+                            is_node_anchored.value = false
                         },
                     ) {
                         Icon(

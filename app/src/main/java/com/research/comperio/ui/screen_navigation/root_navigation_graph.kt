@@ -1,16 +1,13 @@
 package com.research.comperio.ui.screen_navigation
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.navigation
 import com.research.comperio.ui.screen.activities.first_activity
+import com.research.comperio.ui.screen.activities.second_activity
 import com.research.comperio.ui.screen.activities.tutorial_activity
 import com.research.comperio.ui.screen.home.account_info_screen
 import com.research.comperio.ui.screen.home.home_screen
@@ -75,6 +72,9 @@ fun home_navigation_graph(
         }
         composable(route = comperio_navigation.first_activity.route) {
             first_activity(navigation_controller = navigation_controller)
+        }
+        composable(route = comperio_navigation.second_activity.route) {
+            second_activity(navigation_controller = navigation_controller)
         }
     }
 }

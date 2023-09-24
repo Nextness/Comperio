@@ -169,13 +169,16 @@ fun home_screen(navigation_controller: NavController, content_padding: PaddingVa
             )
             Spacer(modifier = Modifier.height(20.dp))
             default_button_with_adjustments(button_label = R.string.home_screen_label_second_activity,
-                button_color = comperio_light_background,
-                label_color = comperio_black_dark,
+                button_color = MaterialTheme.extended_color_scheme.primary,
+                label_color = MaterialTheme.extended_color_scheme.on_primary_text_color,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(70.dp)
                     .clip(RoundedCornerShape(5.dp)),
-                on_click = {})
+                on_click = {
+                    navigation_controller.navigate(route = comperio_navigation.second_activity.route)
+                }
+            )
             Spacer(modifier = Modifier.height(40.dp))
             Text(
                 modifier = Modifier

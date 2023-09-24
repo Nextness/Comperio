@@ -2,6 +2,8 @@
 
 package com.research.comperio.ui.screen.activities
 
+import android.content.pm.ActivityInfo
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -33,8 +35,8 @@ import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -46,17 +48,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.ar.core.TrackingFailureReason
@@ -67,50 +64,18 @@ import com.research.comperio.theme.transparent
 import com.research.comperio.ui.common.component_height
 import com.research.comperio.ui.common.default_button
 import com.research.comperio.ui.common.dialog_box
+import com.research.comperio.ui.common.set_screen_orientation
 import dev.romainguy.kotlin.math.Float3
 import io.github.sceneview.ar.ARScene
 import io.github.sceneview.ar.node.ArModelNode
-import io.github.sceneview.ar.node.PlacementMode
 import io.github.sceneview.math.Position
-import io.github.sceneview.math.Rotation
 
 
-fun ar_node_init(
-    placement_mode: PlacementMode = PlacementMode.BEST_AVAILABLE,
-    hit_position: Position = Position(0.0f, 0.0f, -2.0f),
-    follow_hit_position: Boolean = true,
-    instant_anchor: Boolean = false
-): MutableState<ArModelNode> {
-    return mutableStateOf(
-        ArModelNode(
-            placementMode = placement_mode,
-            hitPosition = hit_position,
-            followHitPosition = follow_hit_position,
-            instantAnchor = instant_anchor,
-        )
-    )
-}
-
-fun ar_node_load(
-    node: MutableState<ArModelNode>,
-    file_location: String,
-    auto_animate: Boolean,
-    scale_to_units: Float,
-    center_origin: Position
-) {
-    node.value.loadModelGlbAsync(
-        glbFileLocation = file_location,
-        autoAnimate = auto_animate,
-        scaleToUnits = scale_to_units,
-        centerOrigin = center_origin
-    )
-}
-
-@Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun BoxScope.first_activity_ui_elements(
+@Composable
+private fun BoxScope.second_activity_ui_element(
     back_handler_dialog_box: MutableState<Boolean>,
-    force: MutableState<Float>,
+    distance: MutableState<Float>,
     scale: MutableState<Float>,
     are_nodes_anchored: MutableState<Boolean>,
     ar_nodes: MutableList<ArModelNode>
@@ -198,6 +163,7 @@ private fun BoxScope.first_activity_ui_elements(
                     )
                 }
             }
+
             Column(
                 modifier = Modifier
                     .offset(y = off_set.value.dp)
@@ -211,24 +177,11 @@ private fun BoxScope.first_activity_ui_elements(
                     modifier = Modifier
                         .height(25.dp)
                         .clip(RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp))
-                        .background(Color(0xFFFFFFFF)),
-                    contentAlignment = Alignment.Center
+                        .background(Color(0xFFFFFFFF)), contentAlignment = Alignment.Center
                 ) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = buildAnnotatedString {
-                            append("Carga das Particulas: ${force.value.format(2)} × 10")
-                            withStyle(
-                                SpanStyle(
-                                    baselineShift = BaselineShift.Superscript,
-                                    fontSize = 10.sp
-                                )
-                            ) {
-                                append("-19")
-                            }
-                            append(" C")
-
-                        },
+                        text = "Distância entre linha e carga: ${distance.value.format(2)} metros",
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.bodyMedium
@@ -236,15 +189,19 @@ private fun BoxScope.first_activity_ui_elements(
                 }
                 Slider(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(bottomStart = 6.dp, bottomEnd = 6.dp))
+                        .clip(
+                            RoundedCornerShape(
+                                bottomStart = 6.dp, bottomEnd = 6.dp
+                            )
+                        )
                         .height(54.dp)
                         .background(Color(0xFFFFFFFF))
                         .padding(8.dp),
-                    value = force.value,
-                    valueRange = 2.8f..4f,
+                    value = distance.value,
+                    valueRange = 2f..9f,
                     interactionSource = interaction_source_1,
                     onValueChange = {
-                        force.value = it
+                        distance.value = it
                     },
                     thumb = {
                         SliderDefaults.Thumb( //androidx.compose.material3.SliderDefaults
@@ -255,8 +212,7 @@ private fun BoxScope.first_activity_ui_elements(
                         )
                     },
                     colors = SliderDefaults.colors(
-                        activeTrackColor = Color(0xFF8E79F4),
-                        inactiveTrackColor = Color(0xFFD9DAE1)
+                        activeTrackColor = Color(0xFF8E79F4), inactiveTrackColor = Color(0xFFD9DAE1)
                     ),
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -264,13 +220,11 @@ private fun BoxScope.first_activity_ui_elements(
                     modifier = Modifier
                         .height(25.dp)
                         .clip(RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp))
-                        .background(Color(0xFFFFFFFF)),
-                    contentAlignment = Alignment.Center
+                        .background(Color(0xFFFFFFFF)), contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        text = "Escala dos Modelos: ${scale.value.format(2)}",
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "Escala dos Modelos: ${scale.value.format(2)} ",
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.bodyMedium
@@ -278,7 +232,11 @@ private fun BoxScope.first_activity_ui_elements(
                 }
                 Slider(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(bottomStart = 6.dp, bottomEnd = 6.dp))
+                        .clip(
+                            RoundedCornerShape(
+                                bottomStart = 6.dp, bottomEnd = 6.dp
+                            )
+                        )
                         .height(54.dp)
                         .background(Color(0xFFFFFFFF))
                         .padding(8.dp),
@@ -297,14 +255,12 @@ private fun BoxScope.first_activity_ui_elements(
                         )
                     },
                     colors = SliderDefaults.colors(
-                        activeTrackColor = Color(0xFF8E79F4),
-                        inactiveTrackColor = Color(0xFFD9DAE1)
+                        activeTrackColor = Color(0xFF8E79F4), inactiveTrackColor = Color(0xFFD9DAE1)
                     ),
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
-                    default_button(
-                        button_enabled = true,
+                    default_button(button_enabled = true,
                         button_label = if (!are_nodes_anchored.value) R.string.tutorial_activity_label_add_model else R.string.tutorial_activity_label_unfix_model,
                         label_color = Color(0xFFFFFFFF),
                         button_color = main_color,
@@ -341,7 +297,7 @@ private fun BoxScope.first_activity_ui_elements(
                                 node.scale = Float3(1f, 1f, 1f)
                                 node.rotation = Float3(0f, 0f, 0f)
                                 scale.value = 0.05f
-                                force.value = 3f
+                                distance.value = 5f
                             }
                             are_nodes_anchored.value = false
                         },
@@ -362,91 +318,63 @@ private fun BoxScope.first_activity_ui_elements(
 }
 
 @Composable
-fun first_activity(navigation_controller: NavController) {
+fun second_activity(navigation_controller: NavController) {
     val back_handler_dialog_box = remember { mutableStateOf(false) }
     val are_nodes_anchored = remember { mutableStateOf(false) }
-    val ar_nodes = remember { mutableListOf<ArModelNode>() }
+    val charged_line = remember { ar_node_init() }
     val particle_1 = remember { ar_node_init() }
-    val particle_2 = remember { ar_node_init() }
-    val arrow_1 = remember { ar_node_init() }
-    val arrow_2 = remember { ar_node_init() }
-    val force = remember { mutableStateOf(3.0f) }
+    val ar_nodes = remember { mutableListOf<ArModelNode>() }
+    val distance = remember { mutableStateOf(4.0f) }
     val scale = remember { mutableStateOf(0.05f) }
 
-    arrow_1.value.modelRotation = Rotation(x = 0f, y = -90f, z = 0f)
-    arrow_2.value.modelRotation = Rotation(x = 0f, y = 90f, z = 0f)
+    charged_line.value.name = "charged_line"
+    particle_1.value.name = "particle_1"
 
     ar_node_load(
         particle_1,
         "models/particle.glb",
         false,
         scale.value,
-        Position(x = -force.value, y = 0f, z = 0f)
+        Position(x = -distance.value, y = 0f, z = 0f)
     )
     ar_node_load(
-        particle_2,
-        "models/particle.glb",
-        false,
-        scale.value,
-        Position(x = force.value, y = 0f, z = 0f)
+        charged_line,
+        "models/charged_line.glb",
+        true,
+        0.5f + scale.value,
+        Position(x = 4f, y = 0f, z = 0f)
     )
-    ar_node_load(
-        arrow_1,
-        "models/arrow.glb",
-        false,
-        scale.value * 0.95f * ((force.value + 3) / 8),
-        Position(
-            x = (-force.value + force.value * 0.25f) * (1 + scale.value * 0.95f * ((force.value + 3) / 8)),
-            y = 0f,
-            z = 0f
-        )
-    )
-    ar_node_load(
-        arrow_2,
-        "models/arrow.glb",
-        false,
-        scale.value * 0.95f * ((force.value + 3) / 8),
-        Position(
-            x = (force.value - force.value * 0.25f) * (1 + scale.value * 0.95f * ((force.value + 3) / 8)),
-            y = 0f,
-            z = 0f
-        )
-    )
-
     ar_nodes.addAll(
         listOf(
-            particle_1.value,
-            particle_2.value,
-            arrow_1.value,
-            arrow_2.value
+            charged_line.value,
+            particle_1.value
         )
     )
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        BackHandler { back_handler_dialog_box.value = true }
-        dialog_box(back_handler_dialog_box, navigation_controller)
+    BackHandler { back_handler_dialog_box.value = true }
+    dialog_box(back_handler_dialog_box, navigation_controller)
 
-        ARScene(
-            modifier = Modifier.fillMaxSize(),
+    set_screen_orientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+    Box(modifier = Modifier.fillMaxSize()) {
+        ARScene(modifier = Modifier.fillMaxSize(),
             nodes = ar_nodes,
             planeRenderer = false,
             onTrackingFailureChanged = {
                 TrackingFailureReason.EXCESSIVE_MOTION
             }
         )
-
-        first_activity_ui_elements(
-            back_handler_dialog_box,
-            force,
-            scale,
-            are_nodes_anchored,
-            ar_nodes
+        second_activity_ui_element(
+            back_handler_dialog_box = back_handler_dialog_box,
+            distance = distance,
+            scale = scale,
+            ar_nodes = ar_nodes,
+            are_nodes_anchored = are_nodes_anchored
         )
     }
 }
 
 @Preview
 @Composable
-fun preview_first_activity() {
-    first_activity(navigation_controller = rememberNavController())
+fun preview_second_activity() {
+    second_activity(navigation_controller = rememberNavController())
 }
